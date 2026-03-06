@@ -219,27 +219,36 @@
 
         function renderDashboard() {
             if (!dashboardData) return;
+            
+            // Helper to safely set textContent
+            const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            
             const m = dashboardData.project_meta || {};
-            document.getElementById('projectNameZh').textContent = m.name_zh || '--';
-            document.getElementById('projectNameEn').textContent = m.name_en || '--';
+            setText('projectNameZh', m.name_zh || '--');
+            setText('projectNameEn', m.name_en || '--');
             document.getElementById('repoLink').href = m.links?.repo || '#';
             document.getElementById('pagesLink').href = m.links?.pages || '#';
-            const el = document.getElementById('externalLink'); el.style.display = m.links?.external ? 'flex' : 'none'; el.href = m.links?.external || '#';
-            document.getElementById('lastUpdated').textContent = new Date(m.last_updated || dashboardData.last_updated).toLocaleString('zh-TW');
+            const el = document.getElementById('externalLink'); 
+            if (el) { el.style.display = m.links?.external ? 'flex' : 'none'; el.href = m.links?.external || '#'; }
+            setText('lastUpdated', new Date(m.last_updated || dashboardData.last_updated).toLocaleString('zh-TW'));
+            
             const gh = dashboardData.github_status || {};
-            document.getElementById('openIssues').textContent = gh.open_issues || 0;
-            document.getElementById('pendingPRs').textContent = gh.pending_prs || 0;
-            document.getElementById('branchName').textContent = gh.branch || '--';
+            setText('openIssues', gh.open_issues || 0);
+            setText('pendingPRs', gh.pending_prs || 0);
+            setText('branchName', gh.branch || '--');
+            
             const tm = dashboardData.token_metrics || {};
-            document.getElementById('sessionToken').textContent = (tm.session_avg_tokens || 0).toLocaleString();
-            document.getElementById('cronToken').textContent = (tm.cron_avg_tokens || 0).toLocaleString();
+            setText('sessionToken', (tm.session_avg_tokens || 0).toLocaleString());
+            setText('cronToken', (tm.cron_avg_tokens || 0).toLocaleString());
+            
             const ch = tm.cron_health || {};
-            document.getElementById('cronLastRun').textContent = ch.last_run ? new Date(ch.last_run).toLocaleString('zh-TW') : '--';
+            setText('cronLastRun', ch.last_run ? new Date(ch.last_run).toLocaleString('zh-TW') : '--');
             const se = document.getElementById('cronStatus');
             if (se) {
                 se.textContent = ch.status === 'success' ? '✅ 正常' : ch.status === 'failed' ? '❌ 失敗' : '⚠️ 未知';
                 se.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ' + (ch.status === 'success' ? 'bg-green-100 text-green-700' : ch.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700');
             }
+            
             renderProjectList(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
         }
 
