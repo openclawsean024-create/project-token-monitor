@@ -190,15 +190,19 @@
         overlay?.addEventListener('click', toggleSidebar);
 
         async function loadData() {
+            // Determine base path for GitHub Pages subdirectory
+            const basePath = window.location.pathname.replace(/\/[^/]*$/, '') || '/';
+            const dataPath = basePath + '/data/dashboard-data.json';
             try { 
-                const r = await fetch('./data/dashboard-data.json'); 
-                if (!r.ok) throw new Error('Network response was not ok');
+                const r = await fetch(dataPath); 
+                if (!r.ok) throw new Error('Network response was not ok: ' + r.status);
                 dashboardData = await r.json(); 
                 renderDashboard(); 
             } catch(e) { 
                 console.error('Data load error:', e);
+                // Try alternative paths
                 try { 
-                    const r = await fetch('../data/dashboard-data.json'); 
+                    const r = await fetch('./data/dashboard-data.json'); 
                     if (!r.ok) throw new Error('Network response was not ok');
                     dashboardData = await r.json(); 
                     renderDashboard(); 
