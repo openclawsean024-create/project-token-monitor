@@ -190,7 +190,23 @@
         overlay?.addEventListener('click', toggleSidebar);
 
         async function loadData() {
-            try { const r = await fetch('./data/dashboard-data.json'); dashboardData = await r.json(); renderDashboard(); } catch(e) { try { const r = await fetch('../data/dashboard-data.json'); dashboardData = await r.json(); renderDashboard(); } catch(e2) { document.getElementById('lastUpdated').textContent = '資料載入失敗'; } }
+            try { 
+                const r = await fetch('./data/dashboard-data.json'); 
+                if (!r.ok) throw new Error('Network response was not ok');
+                dashboardData = await r.json(); 
+                renderDashboard(); 
+            } catch(e) { 
+                console.error('Data load error:', e);
+                try { 
+                    const r = await fetch('../data/dashboard-data.json'); 
+                    if (!r.ok) throw new Error('Network response was not ok');
+                    dashboardData = await r.json(); 
+                    renderDashboard(); 
+                } catch(e2) { 
+                    console.error('Fallback load error:', e2);
+                    document.getElementById('lastUpdated').textContent = '資料載入失敗'; 
+                } 
+            }
         }
 
         function renderDashboard() {
@@ -222,25 +238,43 @@
         }
 
         function renderProjectList() {
-            const c = document.getElementById('projectList');
-            c.innerHTML = (dashboardData.projects || []).slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><span class="text-sm text-gray-500 flex-shrink-0">${p.size_kb.toLocaleString()} KB</span></div>`).join('');
+            try {
+                const c = document.getElementById('projectList');
+                if (!c) return;
+                const projects = dashboardData?.projects || [];
+                c.innerHTML = projects.slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><span class="text-sm text-gray-500 flex-shrink-0">${p.size_kb?.toLocaleString() || 0} KB</span></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無專案資料</p>';
+            } catch(e) { console.error('renderProjectList error:', e); }
         }
 
         function renderTopFiles() {
-            const c = document.getElementById('topFiles');
-            c.innerHTML = (dashboardData.file_explorer || []).slice(0, 5).map(f => `<div class="flex items-center justify-between p-2 md:p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right flex-shrink-0 ml-2"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('');
+            try {
+                const c = document.getElementById('topFiles');
+                if (!c) return;
+                const files = dashboardData?.file_explorer || [];
+                c.innerHTML = files.slice(0, 5).map(f => `<div class="flex items-center justify-between p-2 md:p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right flex-shrink-0 ml-2"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens?.toLocaleString() || 0}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無檔案資料</p>';
+            } catch(e) { console.error('renderTopFiles error:', e); }
         }
 
         function renderRecentCommits() {
-            const c = document.getElementById('recentCommits');
-            const commits = dashboardData.github_status?.recent_commits || [];
-            c.innerHTML = commits.map((commit, i) => `<div class="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-lg"><div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-indigo-600 font-bold text-sm">${i+1}</span></div><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${commit.message}</p><div class="flex items-center gap-2 mt-1 text-xs text-gray-500"><span>${commit.author}</span><span>·</span><span>${commit.date ? new Date(commit.date).toLocaleString('zh-TW') : '--'}</span></div></div></div>`).join('') || '<p class="text-gray-500 text-sm">無 Commit 紀錄</p>';
+            try {
+                const c = document.getElementById('recentCommits');
+                if (!c) return;
+                const commits = dashboardData?.github_status?.recent_commits || [];
+                c.innerHTML = commits.map((commit, i) => `<div class="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-lg"><div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-indigo-600 font-bold text-sm">${i+1}</span></div><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${commit.message}</p><div class="flex items-center gap-2 mt-1 text-xs text-gray-500"><span>${commit.author}</span><span>·</span><span>${commit.date ? new Date(commit.date).toLocaleString('zh-TW') : '--'}</span></div></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無 Commit 紀錄</p>';
+            } catch(e) { console.error('renderRecentCommits error:', e); }
         }
 
         function renderFileExplorer() {
-            const c = document.getElementById('fileExplorer');
-            c.innerHTML = (dashboardData.file_explorer || []).map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2 min-w-0"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700 truncate">${f.path}</span></div><div class="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-shrink-0"><span class="hidden md:inline">${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</span></div></div>`).join('');
-            document.getElementById('fileSearch').addEventListener('input', e => { const q = e.target.value.toLowerCase(); c.querySelectorAll('div').forEach(i => i.style.display = i.textContent.toLowerCase().includes(q) ? 'flex' : 'none'); });
+            try {
+                const c = document.getElementById('fileExplorer');
+                if (!c) return;
+                const files = dashboardData?.file_explorer || [];
+                c.innerHTML = files.map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2 min-w-0"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700 truncate">${f.path}</span></div><div class="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-shrink-0"><span class="hidden md:inline">${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens?.toLocaleString() || 0}</span></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無檔案資料</p>';
+                const searchInput = document.getElementById('fileSearch');
+                if (searchInput) {
+                    searchInput.addEventListener('input', e => { const q = e.target.value.toLowerCase(); c.querySelectorAll('div').forEach(i => i.style.display = i.textContent.toLowerCase().includes(q) ? 'flex' : 'none'); });
+                }
+            } catch(e) { console.error('renderFileExplorer error:', e); }
         }
 
         function renderDailyUsageTable() {
