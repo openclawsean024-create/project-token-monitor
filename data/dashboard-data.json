@@ -1,52 +1,116 @@
 {
-  "last_updated": "2026-03-06T09:05:00Z",
+  "project_meta": {
+    "name_zh": "跨平台 Token 效能監控儀表板",
+    "name_en": "Omni-Token & Repo Monitor Dashboard",
+    "links": {
+      "repo": "https://github.com/openclawsean024-create/project-token-monitor",
+      "pages": "https://openclawsean024-create.github.io/project-token-monitor/",
+      "external": ""
+    },
+    "last_updated": "2026-03-06T09:45:00Z"
+  },
   "github_status": {
     "branch": "main",
     "open_issues": 3,
-    "pending_prs": 2
+    "pending_prs": 2,
+    "recent_commits": [
+      {
+        "sha": "b74ebbd",
+        "message": "Initial commit: Project Token Monitor Dashboard",
+        "author": "Sean",
+        "date": "2026-03-06T09:00:00Z"
+      }
+    ]
   },
-  "recent_commits": [
-    {
-      "message": "Add token monitoring dashboard",
-      "author": "Sean",
-      "date": "2026-03-06T08:00:00Z"
-    },
-    {
-      "message": "Update data collection script",
-      "author": "Sean",
-      "date": "2026-03-05T14:30:00Z"
-    },
-    {
-      "message": "Initial commit",
-      "author": "Sean",
-      "date": "2026-03-04T10:00:00Z"
-    }
-  ],
   "token_metrics": {
-    "session_avg": 4500,
-    "cron_avg": 1200,
+    "session_avg_tokens": 4500,
+    "cron_avg_tokens": 1200,
+    "cron_health": {
+      "last_run": "2026-03-06T09:45:00Z",
+      "status": "success"
+    },
+    "cost_estimate_usd": 55.8,
+    "monthly_projection": 558000,
     "daily_usage": [
       {"date": "03-02", "abab6_5s": 12000, "abab7": 5000},
       {"date": "03-03", "abab6_5s": 13500, "abab7": 5500},
       {"date": "03-04", "abab6_5s": 11000, "abab7": 4800},
       {"date": "03-05", "abab6_5s": 14500, "abab7": 6200},
       {"date": "03-06", "abab6_5s": 13000, "abab7": 5800}
-    ],
-    "monthly_projection": 558000,
-    "monthly_cost_usd": 55.8
+    ]
   },
   "file_explorer": [
-    {"path": "skills/afrexai-presentation-mastery/SKILL.md", "size_kb": 22.2, "est_tokens": 22200, "status": "critical"},
-    {"path": "skills/stripe/skill.md", "size_kb": 26.1, "est_tokens": 26100, "status": "critical"},
-    {"path": "skills/prezentit/SKILL.md", "size_kb": 21.9, "est_tokens": 21900, "status": "critical"},
-    {"path": "skills/skill-vetting/ARCHITECTURE.md", "size_kb": 11.1, "est_tokens": 11065, "status": "warning"},
-    {"path": "PROJECT-DASHBOARD.md", "size_kb": 8.8, "est_tokens": 8800, "status": "warning"},
-    {"path": "skills/slidespeak/references/API.md", "size_kb": 8.9, "est_tokens": 8858, "status": "warning"},
-    {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "status": "warning"},
-    {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "status": "warning"},
-    {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "status": "warning"},
-    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "status": "warning"}
+    {"path": "skills/afrexai-presentation-mastery/SKILL.md", "size_kb": 22.2, "est_tokens": 22200, "last_modified": "2026-02-15", "status": "critical"},
+    {"path": "skills/stripe/skill.md", "size_kb": 26.1, "est_tokens": 26100, "last_modified": "2026-02-20", "status": "critical"},
+    {"path": "skills/prezentit/SKILL.md", "size_kb": 21.9, "est_tokens": 21900, "last_modified": "2026-02-18", "status": "critical"},
+    {"path": "skills/skill-vetting/ARCHITECTURE.md", "size_kb": 11.1, "est_tokens": 11065, "last_modified": "2026-01-28", "status": "warning"},
+    {"path": "PROJECT-DASHBOARD.md", "size_kb": 8.8, "est_tokens": 8800, "last_modified": "2026-03-05", "status": "warning"},
+    {"path": "skills/slidespeak/references/API.md", "size_kb": 8.9, "est_tokens": 8858, "last_modified": "2026-02-10", "status": "warning"},
+    {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "last_modified": "2026-02-05", "status": "warning"},
+    {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "last_modified": "2026-03-06", "status": "warning"},
+    {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "last_modified": "2026-01-15", "status": "warning"},
+    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "last_modified": "2026-03-01", "status": "warning"}
   ],
+  "audit_and_insights": {
+    "action_items": [
+      {
+        "priority": "high",
+        "category": "immediate",
+        "task": "拆分 skills/afrexai-presentation-mastery/SKILL.md (22.2KB) 以降低啟動 Token",
+        "reason": "單一檔案佔用 22,200 Tokens，影響每次 Session 啟動速度"
+      },
+      {
+        "priority": "high",
+        "category": "structure",
+        "task": "倉庫清理：移除 report-form 中的 node_modules",
+        "reason": "該專案體積達 24MB，其中大部分為 node_modules"
+      },
+      {
+        "priority": "medium",
+        "category": "automation",
+        "task": "建立統一的 GitHub Actions CI/CD 流程",
+        "reason": "目前各專案自動化程度不一，需整合以提升效率"
+      },
+      {
+        "priority": "medium",
+        "category": "optimization",
+        "task": "實作 RAG 模式載入 Skills 文件",
+        "reason": "全載入Skills消耗約299KB，改用RAG可節省80%以上"
+      },
+      {
+        "priority": "low",
+        "category": "docs",
+        "task": "為所有專案補齊 README.md 文件",
+        "reason": "部分專案缺少說明文件，不利於維護與交接"
+      }
+    ],
+    "competitor_gaps": [
+      {
+        "feature": "串接外部 API 即時搜尋",
+        "status": "missing",
+        "impact": "high",
+        "suggestion": "整合 Tavily/Exa API 實現 RAG 即時檢索"
+      },
+      {
+        "feature": "WebSocket 即時數據更新",
+        "status": "missing",
+        "impact": "medium",
+        "suggestion": "目前僅支援輪詢，可改用 WebSocket 提升即時性"
+      },
+      {
+        "feature": "多模型支援",
+        "status": "partial",
+        "impact": "medium",
+        "suggestion": "目前僅支援 MiniMax，可擴充支援 OpenAI/Claude 等"
+      },
+      {
+        "feature": "離線支援 / PWA",
+        "status": "missing",
+        "impact": "low",
+        "suggestion": "實作 PWA 使儀表板可離線存取"
+      }
+    ]
+  },
   "projects": [
     {"name": "report-form", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112},
     {"name": "openclaw-exporter", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052},
