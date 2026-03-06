@@ -266,7 +266,25 @@
             const ctx = document.getElementById('tokenChart').getContext('2d');
             const d = dashboardData.token_metrics?.daily_usage || [];
             if (tokenChart) tokenChart.destroy();
-            tokenChart = new Chart(ctx, { type: 'line', data: { labels: d.map(x => x.date), datasets: [{ label: 'abab6.5s', data: d.map(x => x.abab6_5s), borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.1)', fill: true, tension: 0.4 }, { label: 'abab7', data: d.map(x => x.abab7), borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() } } } } });
+            tokenChart = new Chart(ctx, { 
+                type: 'bar', 
+                data: { 
+                    labels: d.map(x => x.date), 
+                    datasets: [
+                        { label: 'abab6.5s', data: d.map(x => x.abab6_5s), backgroundColor: '#6366f1', borderRadius: 4 },
+                        { label: 'abab7', data: d.map(x => x.abab7), backgroundColor: '#8b5cf6', borderRadius: 4 }
+                    ] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { position: 'top' } }, 
+                    scales: { 
+                        x: { stacked: true },
+                        y: { beginAtZero: true, stacked: true, ticks: { callback: v => v.toLocaleString() } } 
+                    } 
+                } 
+            });
         }
 
         function renderDailyUsageTable() {
