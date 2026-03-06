@@ -1,0 +1,62 @@
+{
+  "last_updated": "2026-03-06T09:05:00Z",
+  "github_status": {
+    "branch": "main",
+    "open_issues": 3,
+    "pending_prs": 2
+  },
+  "recent_commits": [
+    {
+      "message": "Add token monitoring dashboard",
+      "author": "Sean",
+      "date": "2026-03-06T08:00:00Z"
+    },
+    {
+      "message": "Update data collection script",
+      "author": "Sean",
+      "date": "2026-03-05T14:30:00Z"
+    },
+    {
+      "message": "Initial commit",
+      "author": "Sean",
+      "date": "2026-03-04T10:00:00Z"
+    }
+  ],
+  "token_metrics": {
+    "session_avg": 4500,
+    "cron_avg": 1200,
+    "daily_usage": [
+      {"date": "03-02", "abab6_5s": 12000, "abab7": 5000},
+      {"date": "03-03", "abab6_5s": 13500, "abab7": 5500},
+      {"date": "03-04", "abab6_5s": 11000, "abab7": 4800},
+      {"date": "03-05", "abab6_5s": 14500, "abab7": 6200},
+      {"date": "03-06", "abab6_5s": 13000, "abab7": 5800}
+    ],
+    "monthly_projection": 558000,
+    "monthly_cost_usd": 55.8
+  },
+  "file_explorer": [
+    {"path": "skills/afrexai-presentation-mastery/SKILL.md", "size_kb": 22.2, "est_tokens": 22200, "status": "critical"},
+    {"path": "skills/stripe/skill.md", "size_kb": 26.1, "est_tokens": 26100, "status": "critical"},
+    {"path": "skills/prezentit/SKILL.md", "size_kb": 21.9, "est_tokens": 21900, "status": "critical"},
+    {"path": "skills/skill-vetting/ARCHITECTURE.md", "size_kb": 11.1, "est_tokens": 11065, "status": "warning"},
+    {"path": "PROJECT-DASHBOARD.md", "size_kb": 8.8, "est_tokens": 8800, "status": "warning"},
+    {"path": "skills/slidespeak/references/API.md", "size_kb": 8.9, "est_tokens": 8858, "status": "warning"},
+    {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "status": "warning"},
+    {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "status": "warning"},
+    {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "status": "warning"},
+    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "status": "warning"}
+  ],
+  "projects": [
+    {"name": "report-form", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112},
+    {"name": "openclaw-exporter", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052},
+    {"name": "ergonomic-presentation", "path": "ergonomic-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 2681},
+    {"name": "ebook-to-audiobook", "path": "ebook-to-audiobook", "is_git_repo": true, "md_files": 2, "size_kb": 1131},
+    {"name": "staff-reporting-system", "path": "staff-reporting-system", "is_git_repo": true, "md_files": 0, "size_kb": 121},
+    {"name": "sui-blog", "path": "sui-blog", "is_git_repo": true, "md_files": 1, "size_kb": 39},
+    {"name": "youtube-trending-collector", "path": "youtube-trending-collector", "is_git_repo": true, "md_files": 1, "size_kb": 39},
+    {"name": "trade-backtest", "path": "trade-backtest", "is_git_repo": true, "md_files": 0, "size_kb": 47},
+    {"name": "token-dashboard-temp", "path": "token-dashboard-temp", "is_git_repo": true, "md_files": 1, "size_kb": 20},
+    {"name": "ai-interview-assistant", "path": "ai-interview-assistant", "is_git_repo": true, "md_files": 0, "size_kb": 71}
+  ]
+}
