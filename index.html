@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project & Token Monitor Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -127,11 +126,7 @@
                 </div>
 
                 <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Token 消耗趨勢</h3>
-                        <canvas id="tokenChart" height="200 md:250"></canvas>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6 mb-4 md:mb-6">
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                         <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
                         <div id="projectList" class="space-y-2 max-h-48 md:max-h-64 overflow-y-auto"></div>
@@ -173,7 +168,7 @@
     </div>
 
     <script>
-        let dashboardData = null, tokenChart = null;
+        let dashboardData = null;
         
         // Sidebar toggle
         const sidebar = document.getElementById('sidebar');
@@ -215,7 +210,7 @@
             document.getElementById('monthlyCost').textContent = '$' + (tm.cost_estimate_usd || 0);
             const da = tm.daily_usage?.reduce((s, d) => s + (d.abab6_5s || 0) + (d.abab7 || 0), 0) / 5 || 0;
             document.getElementById('dailyAvg').textContent = Math.round(da).toLocaleString();
-            renderProjectList(); renderTopFiles(); renderFileExplorer(); renderTokenChart(); renderDailyUsageTable(); renderActionItems(); renderCompetitorGaps();
+            renderProjectList(); renderTopFiles(); renderFileExplorer(); renderActionItems(); renderCompetitorGaps();
         }
 
         function renderProjectList() {
@@ -232,31 +227,6 @@
             const c = document.getElementById('fileExplorer');
             c.innerHTML = (dashboardData.file_explorer || []).map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2 min-w-0"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700 truncate">${f.path}</span></div><div class="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-shrink-0"><span class="hidden md:inline">${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</span></div></div>`).join('');
             document.getElementById('fileSearch').addEventListener('input', e => { const q = e.target.value.toLowerCase(); c.querySelectorAll('div').forEach(i => i.style.display = i.textContent.toLowerCase().includes(q) ? 'flex' : 'none'); });
-        }
-
-        function renderTokenChart() {
-            const ctx = document.getElementById('tokenChart').getContext('2d');
-            const d = dashboardData.token_metrics?.daily_usage || [];
-            if (tokenChart) tokenChart.destroy();
-            tokenChart = new Chart(ctx, { 
-                type: 'bar', 
-                data: { 
-                    labels: d.map(x => x.date), 
-                    datasets: [
-                        { label: 'abab6.5s', data: d.map(x => x.abab6_5s), backgroundColor: '#6366f1', borderRadius: 4 },
-                        { label: 'abab7', data: d.map(x => x.abab7), backgroundColor: '#8b5cf6', borderRadius: 4 }
-                    ] 
-                }, 
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { position: 'top' } }, 
-                    scales: { 
-                        x: { stacked: true },
-                        y: { beginAtZero: true, stacked: true, ticks: { callback: v => v.toLocaleString() } } 
-                    } 
-                } 
-            });
         }
 
         function renderDailyUsageTable() {
