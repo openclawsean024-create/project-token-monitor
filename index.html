@@ -50,10 +50,6 @@
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                     <span>總覽 Overview</span>
                 </a>
-                <a href="#token" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    <span>Token 分析</span>
-                </a>
                 <a href="#files" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
                     <span>檔案瀏覽器</span>
@@ -146,30 +142,6 @@
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
                     <div id="topFiles" class="space-y-2"></div>
-                </div>
-            </section>
-
-            <!-- Token Analytics Section -->
-            <section id="token" class="p-4 md:p-6 bg-gray-50">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Token 分析</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-4 md:p-5 text-white">
-                        <p class="text-indigo-100 text-sm">本月預估消耗</p>
-                        <p id="monthlyProjection" class="text-3xl md:text-4xl font-bold mt-1 md:mt-2">--</p>
-                        <p class="text-indigo-200 text-xs md:text-sm mt-1">Tokens</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-gray-500 text-sm">預估成本 (USD)</p>
-                        <p id="monthlyCost" class="text-2xl md:text-3xl font-bold text-gray-800 mt-1 md:mt-2">--</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-gray-500 text-sm">每日平均</p>
-                        <p id="dailyAvg" class="text-2xl md:text-3xl font-bold text-gray-800 mt-1 md:mt-2">--</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 overflow-x-auto">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">每日詳細消耗</h3>
-                    <div id="dailyUsageTable"></div>
                 </div>
             </section>
 
