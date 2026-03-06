@@ -17,143 +17,208 @@
         .priority-high { border-left: 4px solid #ef4444; }
         .priority-medium { border-left: 4px solid #f59e0b; }
         .priority-low { border-left: 4px solid #3b82f6; }
+        
+        /* Sidebar toggle animation */
+        .sidebar { transition: transform 0.3s ease-in-out, width 0.3s ease-in-out; }
+        .sidebar.hidden { transform: translateX(-100%); }
+        .sidebar-overlay { display: none; }
+        @media (max-width: 768px) {
+            .sidebar-overlay { display: block; }
+            .sidebar.hidden + .sidebar-overlay { display: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <!-- Mobile Header -->
+    <header class="md:hidden fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-3 flex items-center justify-between shadow-lg">
+        <button id="menuToggle" class="p-2 hover:bg-white/20 rounded-lg transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="text-lg font-bold truncate">Token Monitor</h1>
+        <div class="w-10"></div>
+    </header>
+
+    <div class="flex h-screen pt-14 md:pt-0">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 flex flex-col fixed md:relative inset-y-0 left-0 z-40 h-full">
             <div class="p-4 border-b border-gray-200">
                 <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">Token Monitor</h1>
                 <p class="text-xs text-gray-500">Project Dashboard</p>
             </div>
-            <nav class="flex-1 p-4 space-y-1">
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
                 <a href="#overview" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                    總覽 Overview
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>總覽 Overview</span>
                 </a>
                 <a href="#token" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    Token 分析
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <span>Token 分析</span>
                 </a>
                 <a href="#files" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                    檔案瀏覽器
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                    <span>檔案瀏覽器</span>
                 </a>
                 <a href="#audit" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    審計報告
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span>審計報告</span>
                 </a>
             </nav>
             <div class="p-4 border-t border-gray-200">
                 <div class="text-xs text-gray-500">Last updated:<br><span id="lastUpdated" class="font-medium text-gray-700">--</span></div>
             </div>
         </aside>
-        <main class="flex-1 overflow-y-auto">
-            <section class="p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h2 id="projectNameZh" class="text-2xl font-bold">--</h2>
-                        <p id="projectNameEn" class="text-indigo-200">--</p>
+
+        <!-- Mobile Overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto pb-8">
+            <!-- Project Meta Header -->
+            <section class="p-4 md:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="min-w-0">
+                        <h2 id="projectNameZh" class="text-xl md:text-2xl font-bold truncate">--</h2>
+                        <p id="projectNameEn" class="text-sm md:text-base text-indigo-200 truncate">--</p>
                     </div>
-                    <div class="flex gap-3">
-                        <a id="repoLink" href="#" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition">📂 GitHub Repo</a>
-                        <a id="pagesLink" href="#" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition">🌐 GitHub Pages</a>
-                        <a id="externalLink" href="#" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition">🔗 外部網站</a>
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <a id="repoLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            <span class="hidden sm:inline">GitHub Repo</span>
+                        </a>
+                        <a id="pagesLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                            <span class="hidden sm:inline">GitHub Pages</span>
+                        </a>
+                        <a id="externalLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            <span class="hidden sm:inline">外部網站</span>
+                        </a>
                     </div>
                 </div>
             </section>
-            <section id="overview" class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">專案總覽</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500">Open Issues</p>
-                        <p id="openIssues" class="text-3xl font-bold text-gray-800">--</p>
+
+            <!-- Overview Section -->
+            <section id="overview" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">專案總覽</h2>
+                
+                <!-- KPI Cards - 2x2 on mobile, 4 columns on desktop -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Open Issues</p>
+                        <p id="openIssues" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
                     </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500">Pending PRs</p>
-                        <p id="pendingPRs" class="text-3xl font-bold text-gray-800">--</p>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Pending PRs</p>
+                        <p id="pendingPRs" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
                     </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500">Session Avg Token</p>
-                        <p id="sessionToken" class="text-3xl font-bold text-indigo-600">--</p>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Session Token</p>
+                        <p id="sessionToken" class="text-2xl md:text-3xl font-bold text-indigo-600">--</p>
                     </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500">Cron Avg Token</p>
-                        <p id="cronToken" class="text-3xl font-bold text-purple-600">--</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3">⚡ 執行健康度 (Execution Health)</h3>
-                    <div class="flex items-center gap-6">
-                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Cron Last Run:</span><span id="cronLastRun" class="font-medium text-gray-800">--</span></div>
-                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Status:</span><span id="cronStatus" class="px-3 py-1 rounded-full text-sm font-medium">--</span></div>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Cron Token</p>
+                        <p id="cronToken" class="text-2xl md:text-3xl font-bold text-purple-600">--</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Token 消耗趨勢 (過去5天)</h3>
-                        <canvas id="tokenChart" height="250"></canvas>
-                    </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">專案列表</h3>
-                        <div id="projectList" class="space-y-2 max-h-64 overflow-y-auto"></div>
+
+                <!-- Execution Health -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 md:mb-3">⚡ 執行健康度</h3>
+                    <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Cron Last Run:</span><span id="cronLastRun" class="font-medium text-gray-800 text-sm">--</span></div>
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Status:</span><span id="cronStatus" class="px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">--</span></div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Context 檔案消耗 Top 5</h3>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Token 消耗趨勢</h3>
+                        <canvas id="tokenChart" height="200 md:250"></canvas>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
+                        <div id="projectList" class="space-y-2 max-h-48 md:max-h-64 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Top Files -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
                     <div id="topFiles" class="space-y-2"></div>
                 </div>
             </section>
-            <section id="token" class="p-6 bg-gray-50">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Token 分析</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white">
-                        <p class="text-indigo-100">本月預估消耗</p>
-                        <p id="monthlyProjection" class="text-4xl font-bold mt-2">--</p>
-                        <p class="text-indigo-200 text-sm mt-1">Tokens</p>
+
+            <!-- Token Analytics Section -->
+            <section id="token" class="p-4 md:p-6 bg-gray-50">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Token 分析</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-4 md:p-5 text-white">
+                        <p class="text-indigo-100 text-sm">本月預估消耗</p>
+                        <p id="monthlyProjection" class="text-3xl md:text-4xl font-bold mt-1 md:mt-2">--</p>
+                        <p class="text-indigo-200 text-xs md:text-sm mt-1">Tokens</p>
                     </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                         <p class="text-gray-500 text-sm">預估成本 (USD)</p>
-                        <p id="monthlyCost" class="text-3xl font-bold text-gray-800 mt-2">--</p>
+                        <p id="monthlyCost" class="text-2xl md:text-3xl font-bold text-gray-800 mt-1 md:mt-2">--</p>
                     </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                         <p class="text-gray-500 text-sm">每日平均</p>
-                        <p id="dailyAvg" class="text-3xl font-bold text-gray-800 mt-2">--</p>
+                        <p id="dailyAvg" class="text-2xl md:text-3xl font-bold text-gray-800 mt-1 md:mt-2">--</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">每日詳細消耗</h3>
-                    <div id="dailyUsageTable" class="overflow-x-auto"></div>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 overflow-x-auto">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">每日詳細消耗</h3>
+                    <div id="dailyUsageTable"></div>
                 </div>
             </section>
-            <section id="files" class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">檔案瀏覽器</h2>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-800">所有 MD 檔案</h3>
-                        <input type="text" id="fileSearch" placeholder="搜尋檔案..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+            <!-- File Explorer Section -->
+            <section id="files" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">檔案瀏覽器</h2>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 md:mb-4 gap-2">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800">所有 MD 檔案</h3>
+                        <input type="text" id="fileSearch" placeholder="搜尋檔案..." class="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    <div id="fileExplorer" class="space-y-1 max-h-96 overflow-y-auto"></div>
+                    <div id="fileExplorer" class="space-y-1 max-h-72 md:max-h-96 overflow-y-auto"></div>
                 </div>
             </section>
-            <section id="audit" class="p-6 bg-gray-50">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">審計報告</h2>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">🚀 優先行動清單 (Action Items)</h3>
+
+            <!-- Audit Section -->
+            <section id="audit" class="p-4 md:p-6 bg-gray-50">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">審計報告</h2>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">🚀 優先行動清單</h3>
                     <div id="actionItems" class="space-y-3"></div>
                 </div>
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">⚔️ 競品對標與功能缺口</h3>
-                    <div id="competitorGaps" class="overflow-x-auto"></div>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 overflow-x-auto">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">⚔️ 競品對標與功能缺口</h3>
+                    <div id="competitorGaps"></div>
                 </div>
             </section>
         </main>
     </div>
+
     <script>
         let dashboardData = null, tokenChart = null;
+        
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('hidden');
+        }
+        
+        menuToggle?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', toggleSidebar);
+
         async function loadData() {
             try { const r = await fetch('./data/dashboard-data.json'); dashboardData = await r.json(); renderDashboard(); } catch(e) { try { const r = await fetch('../data/dashboard-data.json'); dashboardData = await r.json(); renderDashboard(); } catch(e2) { document.getElementById('lastUpdated').textContent = '資料載入失敗'; } }
         }
+
         function renderDashboard() {
             if (!dashboardData) return;
             const m = dashboardData.project_meta || {};
@@ -173,48 +238,57 @@
             document.getElementById('cronLastRun').textContent = ch.last_run ? new Date(ch.last_run).toLocaleString('zh-TW') : '--';
             const se = document.getElementById('cronStatus');
             se.textContent = ch.status === 'success' ? '✅ 正常' : ch.status === 'failed' ? '❌ 失敗' : '⚠️ 未知';
-            se.className = 'px-3 py-1 rounded-full text-sm font-medium ' + (ch.status === 'success' ? 'bg-green-100 text-green-700' : ch.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700');
+            se.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ' + (ch.status === 'success' ? 'bg-green-100 text-green-700' : ch.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700');
             document.getElementById('monthlyProjection').textContent = (tm.monthly_projection || 0).toLocaleString();
             document.getElementById('monthlyCost').textContent = '$' + (tm.cost_estimate_usd || 0);
             const da = tm.daily_usage?.reduce((s, d) => s + (d.abab6_5s || 0) + (d.abab7 || 0), 0) / 5 || 0;
             document.getElementById('dailyAvg').textContent = Math.round(da).toLocaleString();
             renderProjectList(); renderTopFiles(); renderFileExplorer(); renderTokenChart(); renderDailyUsageTable(); renderActionItems(); renderCompetitorGaps();
         }
+
         function renderProjectList() {
             const c = document.getElementById('projectList');
-            c.innerHTML = (dashboardData.projects || []).slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><span class="font-medium text-gray-700">${p.name}</span></div><span class="text-sm text-gray-500">${p.size_kb.toLocaleString()} KB</span></div>`).join('');
+            c.innerHTML = (dashboardData.projects || []).slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><span class="font-medium text-gray-700 truncate">${p.name}</span></div><span class="text-sm text-gray-500 flex-shrink-0">${p.size_kb.toLocaleString()} KB</span></div>`).join('');
         }
+
         function renderTopFiles() {
             const c = document.getElementById('topFiles');
-            c.innerHTML = (dashboardData.file_explorer || []).slice(0, 5).map(f => `<div class="flex items-center justify-between p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1"><p class="font-medium text-gray-800 text-sm">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('');
+            c.innerHTML = (dashboardData.file_explorer || []).slice(0, 5).map(f => `<div class="flex items-center justify-between p-2 md:p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right flex-shrink-0 ml-2"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('');
         }
+
         function renderFileExplorer() {
             const c = document.getElementById('fileExplorer');
-            c.innerHTML = (dashboardData.file_explorer || []).map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700">${f.path}</span></div><div class="flex items-center gap-4 text-xs text-gray-500"><span>${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</span></div></div>`).join('');
+            c.innerHTML = (dashboardData.file_explorer || []).map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2 min-w-0"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700 truncate">${f.path}</span></div><div class="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-shrink-0"><span class="hidden md:inline">${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</span></div></div>`).join('');
             document.getElementById('fileSearch').addEventListener('input', e => { const q = e.target.value.toLowerCase(); c.querySelectorAll('div').forEach(i => i.style.display = i.textContent.toLowerCase().includes(q) ? 'flex' : 'none'); });
         }
+
         function renderTokenChart() {
             const ctx = document.getElementById('tokenChart').getContext('2d');
             const d = dashboardData.token_metrics?.daily_usage || [];
             if (tokenChart) tokenChart.destroy();
-            tokenChart = new Chart(ctx, { type: 'line', data: { labels: d.map(x => x.date), datasets: [{ label: 'abab6.5s', data: d.map(x => x.abab6_5s), borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.1)', fill: true, tension: 0.4 }, { label: 'abab7', data: d.map(x => x.abab7), borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() } } } } });
+            tokenChart = new Chart(ctx, { type: 'line', data: { labels: d.map(x => x.date), datasets: [{ label: 'abab6.5s', data: d.map(x => x.abab6_5s), borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.1)', fill: true, tension: 0.4 }, { label: 'abab7', data: d.map(x => x.abab7), borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() } } } } });
         }
+
         function renderDailyUsageTable() {
             const c = document.getElementById('dailyUsageTable');
             const d = dashboardData.token_metrics?.daily_usage || [];
-            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-3 px-4 font-semibold text-gray-700">日期</th><th class="text-left py-3 px-4 font-semibold text-gray-700">abab6.5s</th><th class="text-left py-3 px-4 font-semibold text-gray-700">abab7</th><th class="text-left py-3 px-4 font-semibold text-gray-700">總計</th></tr></thead><tbody>${d.map(x => `<tr class="border-b border-gray-100 hover:bg-gray-50"><td class="py-3 px-4 font-medium">${x.date}</td><td class="py-3 px-4 text-indigo-600">${(x.abab6_5s||0).toLocaleString()}</td><td class="py-3 px-4 text-purple-600">${(x.abab7||0).toLocaleString()}</td><td class="py-3 px-4 font-bold text-gray-800">${((x.abab6_5s||0)+(x.abab7||0)).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;
+            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">日期</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">abab6.5s</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">abab7</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">總計</th></tr></thead><tbody>${d.map(x => `<tr class="border-b border-gray-100 hover:bg-gray-50"><td class="py-2 md:py-3 px-2 md:px-4 font-medium">${x.date}</td><td class="py-2 md:py-3 px-2 md:px-4 text-indigo-600">${(x.abab6_5s||0).toLocaleString()}</td><td class="py-2 md:py-3 px-2 md:px-4 text-purple-600">${(x.abab7||0).toLocaleString()}</td><td class="py-2 md:py-3 px-2 md:px-4 font-bold text-gray-800">${((x.abab6_5s||0)+(x.abab7||0)).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;
         }
+
         function renderActionItems() {
             const c = document.getElementById('actionItems');
             const items = dashboardData.audit_and_insights?.action_items || [];
-            c.innerHTML = items.map((item, i) => `<div class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg ${item.priority === 'high' ? 'priority-high' : item.priority === 'medium' ? 'priority-medium' : 'priority-low'}"><span class="text-gray-400 font-bold">${i+1}.</span><div class="flex-1"><div class="flex items-center gap-2 mb-1"><span class="px-2 py-0.5 bg-gray-200 text-gray-700 rounded text-xs">${item.category==='immediate'?'立即行動':item.category==='structure'?'結構調整':item.category==='automation'?'自動化':item.category==='optimization'?'優化':'文件'}</span><span class="text-sm font-medium">${item.priority==='high'?'🔴 高':item.priority==='medium'?'🟡 中':'🔵 低'}</span></div><p class="font-medium text-gray-800">${item.task}</p><p class="text-sm text-gray-500 mt-1">${item.reason||''}</p></div></div>`).join('');
+            c.innerHTML = items.map((item, i) => `<div class="flex items-start gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 rounded-lg ${item.priority === 'high' ? 'priority-high' : item.priority === 'medium' ? 'priority-medium' : 'priority-low'}"><span class="text-gray-400 font-bold flex-shrink-0">${i+1}.</span><div class="flex-1 min-w-0"><div class="flex flex-wrap items-center gap-1 md:gap-2 mb-1"><span class="px-2 py-0.5 bg-gray-200 text-gray-700 rounded text-xs">${item.category==='immediate'?'立即行動':item.category==='structure'?'結構調整':item.category==='automation'?'自動化':item.category==='optimization'?'優化':'文件'}</span><span class="text-xs md:text-sm font-medium">${item.priority==='high'?'🔴 高':item.priority==='medium'?'🟡 中':'🔵 低'}</span></div><p class="font-medium text-gray-800 text-sm">${item.task}</p><p class="text-xs md:text-sm text-gray-500 mt-1">${item.reason||''}</p></div></div>`).join('');
         }
+
         function renderCompetitorGaps() {
             const c = document.getElementById('competitorGaps');
             const gaps = dashboardData.audit_and_insights?.competitor_gaps || [];
-            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-3 px-4 font-semibold text-gray-700">功能</th><th class="text-left py-3 px-4 font-semibold text-gray-700">狀態</th><th class="text-left py-3 px-4 font-semibold text-gray-700">影響程度</th><th class="text-left py-3 px-4 font-semibold text-gray-700">建議</th></tr></thead><tbody>${gaps.map(g => `<tr class="border-b border-gray-100"><td class="py-3 px-4">${g.feature}</td><td class="py-3 px-4">${g.status==='missing'?'<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">缺少</span>':g.status==='partial'?'<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">部分</span>':'<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">完整</span>'}</td><td class="py-3 px-4 ${g.impact==='high'?'text-red-600 font-medium':g.impact==='medium'?'text-yellow-600 font-medium':'text-blue-600 font-medium'}">${g.impact==='high'?'高':g.impact==='medium'?'中':'低'}</td><td class="py-3 px-4 text-gray-600">${g.suggestion||''}</td></tr>`).join('')}</tbody></table>`;
+            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">功能</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">狀態</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">影響</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700 hidden md:table-cell">建議</th></tr></thead><tbody>${gaps.map(g => `<tr class="border-b border-gray-100"><td class="py-2 md:py-3 px-2 md:px-4">${g.feature}</td><td class="py-2 md:py-3 px-2 md:px-4">${g.status==='missing'?'<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">缺少</span>':g.status==='partial'?'<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">部分</span>':'<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">完整</span>'}</td><td class="py-2 md:py-3 px-2 md:px-4 ${g.impact==='high'?'text-red-600 font-medium':g.impact==='medium'?'text-yellow-600 font-medium':'text-blue-600 font-medium'}">${g.impact==='high'?'高':g.impact==='medium'?'中':'低'}</td><td class="py-2 md:py-3 px-2 md:px-4 text-gray-600 hidden md:table-cell">${g.suggestion||''}</td></tr>`).join('')}</tbody></table>`;
         }
-        document.querySelectorAll('.sidebar-item').forEach(item => { item.addEventListener('click', e => { e.preventDefault(); document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active')); item.classList.add('active'); document.getElementById(item.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth' }); }); });
+
+        document.querySelectorAll('.sidebar-item').forEach(item => { item.addEventListener('click', e => { document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active')); item.classList.add('active'); if(window.innerWidth<768) sidebar.classList.add('hidden'); document.getElementById(item.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth' }); }); });
+        
         loadData(); setInterval(loadData, 5*60*1000);
     </script>
 </body>
