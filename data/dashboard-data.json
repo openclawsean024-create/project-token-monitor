@@ -1,32 +1,29 @@
 {
   "project_meta": {
-    "name_zh": "跨平台 Token 效能監控儀表板",
-    "name_en": "Omni-Token & Repo Monitor Dashboard",
+    "name_zh": "Project & Token Monitor Dashboard",
+    "name_en": "Project Health & Token Analytics Dashboard",
     "links": {
       "repo": "https://github.com/openclawsean024-create/project-token-monitor",
       "pages": "https://openclawsean024-create.github.io/project-token-monitor/",
       "external": ""
     },
-    "last_updated": "2026-03-06T09:45:00Z"
+    "last_updated": "2026-03-06T10:55:00Z"
   },
   "github_status": {
     "branch": "main",
     "open_issues": 3,
     "pending_prs": 2,
     "recent_commits": [
-      {
-        "sha": "b74ebbd",
-        "message": "Initial commit: Project Token Monitor Dashboard",
-        "author": "Sean",
-        "date": "2026-03-06T09:00:00Z"
-      }
+      {"sha": "be35214", "message": "Remove Token consumption trend chart", "author": "Sean", "date": "2026-03-06T10:50:00Z"},
+      {"sha": "6d2e7a5", "message": "Remove Token analytics section", "author": "Sean", "date": "2026-03-06T10:40:00Z"},
+      {"sha": "f086e76", "message": "Change token chart to stacked bar chart", "author": "Sean", "date": "2026-03-06T10:30:00Z"}
     ]
   },
   "token_metrics": {
     "session_avg_tokens": 4500,
     "cron_avg_tokens": 1200,
     "cron_health": {
-      "last_run": "2026-03-06T09:45:00Z",
+      "last_run": "2026-03-06T10:55:00Z",
       "status": "success"
     },
     "cost_estimate_usd": 55.8,
@@ -49,7 +46,11 @@
     {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "last_modified": "2026-02-05", "status": "warning"},
     {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "last_modified": "2026-03-06", "status": "warning"},
     {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "last_modified": "2026-01-15", "status": "warning"},
-    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "last_modified": "2026-03-01", "status": "warning"}
+    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "last_modified": "2026-03-01", "status": "warning"},
+    {"path": "skills/github/SKILL.md", "size_kb": 5.2, "est_tokens": 5200, "last_modified": "2026-02-01", "status": "normal"},
+    {"path": "skills/weather/SKILL.md", "size_kb": 4.8, "est_tokens": 4800, "last_modified": "2026-01-20", "status": "normal"},
+    {"path": "memory/2026-03-05.md", "size_kb": 1.6, "est_tokens": 1600, "last_modified": "2026-03-05", "status": "normal"},
+    {"path": "memory/2026-03-06.md", "size_kb": 2.1, "est_tokens": 2100, "last_modified": "2026-03-06", "status": "normal"}
   ],
   "audit_and_insights": {
     "action_items": [
@@ -112,15 +113,25 @@
     ]
   },
   "projects": [
-    {"name": "report-form", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112},
-    {"name": "openclaw-exporter", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052},
-    {"name": "ergonomic-presentation", "path": "ergonomic-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 2681},
-    {"name": "ebook-to-audiobook", "path": "ebook-to-audiobook", "is_git_repo": true, "md_files": 2, "size_kb": 1131},
-    {"name": "staff-reporting-system", "path": "staff-reporting-system", "is_git_repo": true, "md_files": 0, "size_kb": 121},
-    {"name": "sui-blog", "path": "sui-blog", "is_git_repo": true, "md_files": 1, "size_kb": 39},
-    {"name": "youtube-trending-collector", "path": "youtube-trending-collector", "is_git_repo": true, "md_files": 1, "size_kb": 39},
-    {"name": "trade-backtest", "path": "trade-backtest", "is_git_repo": true, "md_files": 0, "size_kb": 47},
-    {"name": "token-dashboard-temp", "path": "token-dashboard-temp", "is_git_repo": true, "md_files": 1, "size_kb": 20},
-    {"name": "ai-interview-assistant", "path": "ai-interview-assistant", "is_git_repo": true, "md_files": 0, "size_kb": 71}
+    {"name": "report-form", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112, "description": "門市巡訪回報系統"},
+    {"name": "openclaw-exporter", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052, "description": "羅技數據導出工具"},
+    {"name": "project-token-monitor", "path": "project-token-monitor", "is_git_repo": true, "md_files": 1, "size_kb": 35, "description": "專案 Token 監控儀表板"},
+    {"name": "ergonomic-presentation", "path": "ergonomic-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 2681, "description": "人體工學簡報系統"},
+    {"name": "ebook-to-audiobook", "path": "ebook-to-audiobook", "is_git_repo": true, "md_files": 2, "size_kb": 1131, "description": "有聲書轉換器"},
+    {"name": "staff-reporting-system", "path": "staff-reporting-system", "is_git_repo": true, "md_files": 0, "size_kb": 121, "description": "駐點人員回報系統"},
+    {"name": "sui-blog", "path": "sui-blog", "is_git_repo": true, "md_files": 1, "size_kb": 39, "description": "SUI 區塊鏈部落格"},
+    {"name": "youtube-trending-collector", "path": "youtube-trending-collector", "is_git_repo": true, "md_files": 1, "size_kb": 39, "description": "YouTube 趨勢收集器"},
+    {"name": "trade-backtest", "path": "trade-backtest", "is_git_repo": true, "md_files": 0, "size_kb": 47, "description": "交易回測系統"},
+    {"name": "token-dashboard-temp", "path": "token-dashboard-temp", "is_git_repo": true, "md_files": 1, "size_kb": 20, "description": "Token 儀表板 (暫存)"},
+    {"name": "ai-interview-assistant", "path": "ai-interview-assistant", "is_git_repo": true, "md_files": 0, "size_kb": 71, "description": "AI 面試助手"},
+    {"name": "meeting-recorder", "path": "meeting-recorder", "is_git_repo": true, "md_files": 0, "size_kb": 17, "description": "會議記錄系統"},
+    {"name": "business-card-manager", "path": "business-card-manager", "is_git_repo": true, "md_files": 1, "size_kb": 30, "description": "名片管理系統"},
+    {"name": "openclaw-news-collector", "path": "openclaw-news-collector", "is_git_repo": true, "md_files": 1, "size_kb": 37, "description": "新聞收集器"},
+    {"name": "ptt-tracker", "path": "ptt-tracker", "is_git_repo": true, "md_files": 1, "size_kb": 18, "description": "PTT 追蹤器"},
+    {"name": "marathon-pace-bracelet", "path": "marathon-pace-bracelet", "is_git_repo": true, "md_files": 0, "size_kb": 31, "description": "馬拉松配速手環"},
+    {"name": "automation", "path": "automation", "is_git_repo": true, "md_files": 2, "size_kb": 4, "description": "自動化腳本"},
+    {"name": "anime-character-analyzer", "path": "anime-character-analyzer", "is_git_repo": true, "md_files": 0, "size_kb": 27, "description": "動畫角色分析器"},
+    {"name": "market-research-tool", "path": "market-research-tool", "is_git_repo": true, "md_files": 0, "size_kb": 12, "description": "市場調查工具"},
+    {"name": "presentation-generator", "path": "presentation-generator", "is_git_repo": true, "md_files": 0, "size_kb": 15, "description": "簡報生成器"}
   ]
 }

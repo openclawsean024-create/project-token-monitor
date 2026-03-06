@@ -116,10 +116,11 @@
                     </div>
                 </div>
 
-                <!-- Execution Health -->
+            <!-- Execution Health -->
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 md:mb-3">⚡ 執行健康度</h3>
                     <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Branch:</span><span id="branchName" class="font-medium text-gray-800 text-sm">--</span></div>
                         <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Cron Last Run:</span><span id="cronLastRun" class="font-medium text-gray-800 text-sm">--</span></div>
                         <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Status:</span><span id="cronStatus" class="px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">--</span></div>
                     </div>
@@ -134,9 +135,15 @@
                 </div>
 
                 <!-- Top Files -->
-                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
                     <div id="topFiles" class="space-y-2"></div>
+                </div>
+
+                <!-- Recent Commits -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">最近 Commit 紀錄</h3>
+                    <div id="recentCommits" class="space-y-2"></div>
                 </div>
             </section>
 
@@ -198,6 +205,7 @@
             const gh = dashboardData.github_status || {};
             document.getElementById('openIssues').textContent = gh.open_issues || 0;
             document.getElementById('pendingPRs').textContent = gh.pending_prs || 0;
+            document.getElementById('branchName').textContent = gh.branch || '--';
             const tm = dashboardData.token_metrics || {};
             document.getElementById('sessionToken').textContent = (tm.session_avg_tokens || 0).toLocaleString();
             document.getElementById('cronToken').textContent = (tm.cron_avg_tokens || 0).toLocaleString();
@@ -210,17 +218,23 @@
             document.getElementById('monthlyCost').textContent = '$' + (tm.cost_estimate_usd || 0);
             const da = tm.daily_usage?.reduce((s, d) => s + (d.abab6_5s || 0) + (d.abab7 || 0), 0) / 5 || 0;
             document.getElementById('dailyAvg').textContent = Math.round(da).toLocaleString();
-            renderProjectList(); renderTopFiles(); renderFileExplorer(); renderActionItems(); renderCompetitorGaps();
+            renderProjectList(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
         }
 
         function renderProjectList() {
             const c = document.getElementById('projectList');
-            c.innerHTML = (dashboardData.projects || []).slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><span class="font-medium text-gray-700 truncate">${p.name}</span></div><span class="text-sm text-gray-500 flex-shrink-0">${p.size_kb.toLocaleString()} KB</span></div>`).join('');
+            c.innerHTML = (dashboardData.projects || []).slice(0, 10).map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><span class="text-sm text-gray-500 flex-shrink-0">${p.size_kb.toLocaleString()} KB</span></div>`).join('');
         }
 
         function renderTopFiles() {
             const c = document.getElementById('topFiles');
             c.innerHTML = (dashboardData.file_explorer || []).slice(0, 5).map(f => `<div class="flex items-center justify-between p-2 md:p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right flex-shrink-0 ml-2"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens.toLocaleString()}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('');
+        }
+
+        function renderRecentCommits() {
+            const c = document.getElementById('recentCommits');
+            const commits = dashboardData.github_status?.recent_commits || [];
+            c.innerHTML = commits.map((commit, i) => `<div class="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-lg"><div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-indigo-600 font-bold text-sm">${i+1}</span></div><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${commit.message}</p><div class="flex items-center gap-2 mt-1 text-xs text-gray-500"><span>${commit.author}</span><span>·</span><span>${commit.date ? new Date(commit.date).toLocaleString('zh-TW') : '--'}</span></div></div></div>`).join('') || '<p class="text-gray-500 text-sm">無 Commit 紀錄</p>';
         }
 
         function renderFileExplorer() {
