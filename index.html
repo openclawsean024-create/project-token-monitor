@@ -191,12 +191,15 @@
 
         async function loadData() {
             // Determine base path for GitHub Pages subdirectory
-            const basePath = window.location.pathname.replace(/\/[^/]*$/, '') || '/';
+            const pathParts = window.location.pathname.split('/').filter(p => p);
+            const basePath = pathParts.length > 0 ? '/' + pathParts[0] : '';
             const dataPath = basePath + '/data/dashboard-data.json';
+            console.log('Loading from:', dataPath);
             try { 
                 const r = await fetch(dataPath); 
                 if (!r.ok) throw new Error('Network response was not ok: ' + r.status);
                 dashboardData = await r.json(); 
+                console.log('Data loaded successfully:', dashboardData);
                 renderDashboard(); 
             } catch(e) { 
                 console.error('Data load error:', e);
@@ -208,7 +211,8 @@
                     renderDashboard(); 
                 } catch(e2) { 
                     console.error('Fallback load error:', e2);
-                    document.getElementById('lastUpdated').textContent = '資料載入失敗'; 
+                    const lastUpdatedEl = document.getElementById('lastUpdated');
+                    if (lastUpdatedEl) lastUpdatedEl.textContent = '資料載入失敗'; 
                 } 
             }
         }
