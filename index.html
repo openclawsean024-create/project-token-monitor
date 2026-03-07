@@ -425,6 +425,32 @@
                     }
                 }
 
+                const milestoneIcon = `<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>`;
+                
+                const renderMilestones = (p) => {
+                    if (!p.milestones || p.milestones.length === 0) return '';
+                    const completed = p.milestones.filter(m => m.completed).length;
+                    const total = p.milestones.length;
+                    return `<button onclick="editMilestones('${p.name}')" class="flex items-center gap-1 px-2 py-1 bg-indigo-50 hover:bg-indigo-100 rounded-lg text-xs text-indigo-700 transition" title="點擊編輯里程碑">${milestoneIcon}<span>🚩 ${completed}/${total}</span></button>`;
+                };
+                
+                function editMilestones(projectName) {
+                    const project = dashboardData.projects.find(p => p.name === projectName);
+                    if (!project || !project.milestones) { showToast('此專案沒有里程碑'); return; }
+                    const completed = project.milestones.filter(m => m.completed).length;
+                    const total = project.milestones.length;
+                    const toggleIdx = prompt('目前 ' + completed + '/' + total + ' 里程碑完成\\n輸入里程碑編號 (1-' + total + ') 切換完成狀態:\\n\\n' + project.milestones.map((m, i) => (i+1) + '. ' + (m.completed ? '✓' : '○') + ' ' + m.name).join('\\n'), '');
+                    if (toggleIdx !== null) {
+                        const idx = parseInt(toggleIdx) - 1;
+                        if (idx >= 0 && idx < total) {
+                            project.milestones[idx].completed = !project.milestones[idx].completed;
+                            renderProjectListDetail();
+                            showToast('里程碑已更新');
+                            copyJsonToClipboard();
+                        }
+                    }
+                }
+
                 const renderProjectCard = (p) => {
                     const links = [];
                     const org = 'openclawsean024-create';
@@ -455,6 +481,7 @@
                                     <span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">下一步: ${p.next_action || '未設定'}</span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">負責人: ${p.owner || '未指定'}</span>
                                     ${getDueDateBadge(p.due_date)}
+                                    ${renderMilestones(p)}
                                 </div>
                                 <div class="flex flex-wrap gap-2">${links.join('')}</div>
                             </div>

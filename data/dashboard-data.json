@@ -243,7 +243,21 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "優化使用者介面",
-      "due_date": "2026-03-15"
+      "due_date": "2026-03-15",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": true
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "openclaw-exporter",
@@ -256,7 +270,17 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "新增匯出格式支援",
-      "due_date": "2026-04-01"
+      "due_date": "2026-04-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "project-token-monitor",
@@ -269,7 +293,21 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "新增圖表功能",
-      "due_date": "2026-03-20"
+      "due_date": "2026-03-20",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "ergonomic-presentation",
@@ -282,7 +320,17 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "規劃系統架構",
-      "due_date": ""
+      "due_date": "",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "ebook-to-audiobook",
@@ -295,7 +343,21 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "優化音訊品質",
-      "due_date": "2026-03-25"
+      "due_date": "2026-03-25",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": true
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "staff-reporting-system",
@@ -308,7 +370,17 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "建立資料庫結構",
-      "due_date": "2026-05-01"
+      "due_date": "2026-05-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "sui-blog",
@@ -321,7 +393,21 @@
       "progress": "paused",
       "owner": "Sean",
       "next_action": "等待 API 穩定",
-      "due_date": ""
+      "due_date": "",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": true
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "youtube-trending-collector",
@@ -334,7 +420,17 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "部署上線",
-      "due_date": "2026-03-18"
+      "due_date": "2026-03-18",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "trade-backtest",
@@ -347,7 +443,21 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "研究回測演算法",
-      "due_date": "2026-03-15"
+      "due_date": "2026-03-15",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "token-dashboard-temp",
@@ -360,7 +470,17 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "整合主儀表板",
-      "due_date": "2026-04-01"
+      "due_date": "2026-04-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "ai-interview-assistant",
@@ -373,7 +493,21 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "新增問題庫",
-      "due_date": "2026-03-20"
+      "due_date": "2026-03-20",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": true
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "meeting-recorder",
@@ -386,7 +520,17 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "新增搜尋功能",
-      "due_date": ""
+      "due_date": "",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "business-card-manager",
@@ -399,7 +543,21 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "優化OCR辨識",
-      "due_date": "2026-03-25"
+      "due_date": "2026-03-25",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": true
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "openclaw-news-collector",
@@ -412,7 +570,17 @@
       "progress": "paused",
       "owner": "Sean",
       "next_action": "評估其他資料源",
-      "due_date": "2026-05-01"
+      "due_date": "2026-05-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "ptt-tracker",
@@ -425,7 +593,21 @@
       "progress": "completed",
       "owner": "Sean",
       "next_action": "新增關鍵字通知",
-      "due_date": ""
+      "due_date": "",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "marathon-pace-bracelet",
@@ -438,7 +620,17 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "設計配速演算法",
-      "due_date": "2026-03-18"
+      "due_date": "2026-03-18",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "automation",
@@ -451,7 +643,21 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "擴充腳本數量",
-      "due_date": "2026-03-15"
+      "due_date": "2026-03-15",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": true
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "anime-character-analyzer",
@@ -464,7 +670,17 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "收集訓練資料",
-      "due_date": "2026-04-01"
+      "due_date": "2026-04-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "market-research-tool",
@@ -477,7 +693,21 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "定義功能需求",
-      "due_date": "2026-03-20"
+      "due_date": "2026-03-20",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": true
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "presentation-generator",
@@ -490,7 +720,17 @@
       "progress": "in_progress",
       "owner": "Sean",
       "next_action": "整合設計範本",
-      "due_date": ""
+      "due_date": "",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "openclaw-presentation",
@@ -503,7 +743,21 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "建立Skill定義",
-      "due_date": "2026-03-25"
+      "due_date": "2026-03-25",
+      "milestones": [
+        {
+          "name": "規劃完成",
+          "completed": false
+        },
+        {
+          "name": "MVP 開發",
+          "completed": false
+        },
+        {
+          "name": "Beta 測試",
+          "completed": false
+        }
+      ]
     },
     {
       "name": "text-to-speech-mvp",
@@ -516,7 +770,17 @@
       "progress": "planning",
       "owner": "Sean",
       "next_action": "選擇TTS引擎",
-      "due_date": "2026-05-01"
+      "due_date": "2026-05-01",
+      "milestones": [
+        {
+          "name": "需求分析",
+          "completed": true
+        },
+        {
+          "name": "開發完成",
+          "completed": false
+        }
+      ]
     }
   ]
 }
