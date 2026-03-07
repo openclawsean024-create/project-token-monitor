@@ -75,10 +75,6 @@
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                     <span>總覽 Overview</span>
                 </a>
-                <a href="#projects" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                    <span>專案列表</span>
-                </a>
                 <a href="#audit" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                     <span>審計報告</span>
@@ -156,6 +152,12 @@
                     </div>
                 </div>
 
+                <!-- 專案列表 -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
+                    <div id="projectListDetail" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                </div>
+
                 <!-- Token Trend Chart -->
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">📈 Token 使用趨勢 (7天)</h3>
@@ -179,12 +181,6 @@
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">最近 Commit 紀錄</h3>
                     <div id="recentCommits" class="space-y-2"></div>
                 </div>
-            </section>
-
-            <!-- Projects Section -->
-            <section id="projects" class="p-4 md:p-6">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">專案列表</h2>
-                <div id="projectListDetail" class="space-y-4"></div>
             </section>
 
             <!-- Audit Section -->
