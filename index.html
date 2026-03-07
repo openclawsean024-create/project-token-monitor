@@ -164,6 +164,18 @@
                     </div>
                 </div>
 
+                <!-- Token Trend Chart -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">📈 Token 使用趨勢 (7天)</h3>
+                    <div id="tokenTrendChart" class="h-32 md:h-48 flex items-end gap-1 md:gap-2"></div>
+                </div>
+
+                <!-- Budget vs Actual -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">💰 Budget vs Actual</h3>
+                    <div id="budgetComparison" class="space-y-3"></div>
+                </div>
+
                 <!-- Top Files -->
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
@@ -305,7 +317,35 @@
                 se.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ' + (ch.status === 'success' ? 'bg-green-100 text-green-700' : ch.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700');
             }
             
+            // Render token trend chart
+            renderTokenTrend();
+            // Render budget comparison
+            renderBudgetComparison();
+            
             renderProjectList(); renderProjectListDetail(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
+        }
+
+        function renderTokenTrend() {
+            const container = document.getElementById('tokenTrendChart');
+            if (!container) return;
+            const trend = dashboardData?.token_metrics?.trend_7days || [];
+            if (trend.length === 0) { container.innerHTML = '<p class=\"text-gray-500 text-sm\">無趨勢資料</p>'; return; }
+            const maxTokens = Math.max(...trend.map(t => t.tokens));
+            container.innerHTML = trend.map(t => {
+                const height = (t.tokens / maxTokens) * 100;
+                return '<div class=\"flex-1 flex flex-col items-center gap-1\"><div class=\"w-full bg-indigo-500 rounded-t hover:bg-indigo-600 transition relative group\" style=\"height: ' + height + '%min-h-[20px]\"><div class=\"absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap\">' + t.tokens.toLocaleString() + '</div></div><span class=\"text-xs text-gray-500\">' + t.date + '</span></div>';
+            }).join('');
+        }
+
+        function renderBudgetComparison() {
+            const container = document.getElementById('budgetComparison');
+            if (!container) return;
+            const budget = dashboardData?.token_metrics?.budget || {};
+            if (!budget.monthly_limit) { container.innerHTML = '<p class=\"text-gray-500 text-sm\">無預算資料</p>'; return; }
+            const percent = (budget.current_usage / budget.monthly_limit) * 100;
+            const projectedPercent = (budget.projected / budget.monthly_limit) * 100;
+            const color = percent > 90 ? 'bg-red-500' : percent > 70 ? 'bg-yellow-500' : 'bg-green-500';
+            container.innerHTML = '<div class=\"space-y-3\"><div><div class=\"flex justify-between text-sm mb-1\"><span class=\"text-gray-600\">目前: ' + budget.current_usage?.toLocaleString() + ' / ' + budget.monthly_limit?.toLocaleString() + '</span><span class=\"' + (percent > 100 ? 'text-red-600' : 'text-gray-600') + '\">' + percent.toFixed(1) + '%</span></div><div class=\"h-3 bg-gray-200 rounded-full overflow-hidden\"><div class=\"h-full ' + color + ' transition-all\" style=\"width: ' + Math.min(percent, 100) + '%\"></div></div></div><div><div class=\"flex justify-between text-sm mb-1\"><span class=\"text-gray-600\">預測月底: ' + budget.projected?.toLocaleString() + '</span><span class=\"' + (projectedPercent > 100 ? 'text-red-600' : projectedPercent > 80 ? 'text-yellow-600' : 'text-green-600') + '\">' + (projectedPercent > 100 ? '⚠️ 超出預算' : projectedPercent > 80 ? '⚡ 接近上限' : '✅ 正常') + '</span></div></div></div>';
         }
 
         function renderProjectList() {
@@ -468,6 +508,11 @@
                         links.push(`<a href="${externalLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="外部網站">${externalIcon}<span class="hidden sm:inline">網站</span></a>`);
                     }
 
+                    const healthScore = p.health_score || 0;
+                    const healthColor = healthScore >= 80 ? 'text-green-600' : healthScore >= 50 ? 'text-yellow-600' : 'text-red-600';
+                    const healthBg = healthScore >= 80 ? 'bg-green-50' : healthScore >= 50 ? 'bg-yellow-50' : 'bg-red-50';
+                    const healthBadge = '<div class=\"flex items-center gap-1 px-2 py-1 ' + healthBg + ' rounded-lg text-xs ' + healthColor + '\" title=\"專案健康度\"><span class=\"font-medium\">' + healthScore + '</span><span>/100</span></div>';
+
                     return `
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition">
                         <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -485,7 +530,7 @@
                                 </div>
                                 <div class="flex flex-wrap gap-2">${links.join('')}</div>
                             </div>
-                            <div class="flex-shrink-0 sm:ml-4">${getStatusBadge(p.progress, p.name)}</div>
+                            <div class="flex-shrink-0 sm:ml-4 flex items-center gap-2">${healthBadge}${getStatusBadge(p.progress, p.name)}</div>
                         </div>
                     </div>`;
                 };

@@ -69,7 +69,42 @@
         "abab6_5s": 13000,
         "abab7": 5800
       }
-    ]
+    ],
+    "trend_7days": [
+      {
+        "date": "03-01",
+        "tokens": 15200
+      },
+      {
+        "date": "03-02",
+        "tokens": 18500
+      },
+      {
+        "date": "03-03",
+        "tokens": 16800
+      },
+      {
+        "date": "03-04",
+        "tokens": 14200
+      },
+      {
+        "date": "03-05",
+        "tokens": 19100
+      },
+      {
+        "date": "03-06",
+        "tokens": 17500
+      },
+      {
+        "date": "03-07",
+        "tokens": 15800
+      }
+    ],
+    "budget": {
+      "monthly_limit": 600000,
+      "current_usage": 485000,
+      "projected": 520000
+    }
   },
   "file_explorer": [
     {
@@ -257,7 +292,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "openclaw-exporter",
@@ -280,7 +316,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 70
     },
     {
       "name": "project-token-monitor",
@@ -307,7 +344,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 80
     },
     {
       "name": "ergonomic-presentation",
@@ -330,7 +368,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 30
     },
     {
       "name": "ebook-to-audiobook",
@@ -357,7 +396,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 60
     },
     {
       "name": "staff-reporting-system",
@@ -380,7 +420,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 50
     },
     {
       "name": "sui-blog",
@@ -407,7 +448,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 10
     },
     {
       "name": "youtube-trending-collector",
@@ -430,7 +472,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "trade-backtest",
@@ -457,7 +500,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 50
     },
     {
       "name": "token-dashboard-temp",
@@ -480,7 +524,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "ai-interview-assistant",
@@ -507,7 +552,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 80
     },
     {
       "name": "meeting-recorder",
@@ -530,7 +576,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "business-card-manager",
@@ -557,7 +604,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "openclaw-news-collector",
@@ -580,7 +628,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 20
     },
     {
       "name": "ptt-tracker",
@@ -607,7 +656,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 100
     },
     {
       "name": "marathon-pace-bracelet",
@@ -630,7 +680,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 30
     },
     {
       "name": "automation",
@@ -657,7 +708,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 60
     },
     {
       "name": "anime-character-analyzer",
@@ -680,7 +732,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 50
     },
     {
       "name": "market-research-tool",
@@ -707,7 +760,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 30
     },
     {
       "name": "presentation-generator",
@@ -730,7 +784,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 90
     },
     {
       "name": "openclaw-presentation",
@@ -757,7 +812,8 @@
           "name": "Beta 測試",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 50
     },
     {
       "name": "text-to-speech-mvp",
@@ -780,7 +836,8 @@
           "name": "開發完成",
           "completed": false
         }
-      ]
+      ],
+      "health_score": 30
     }
   ]
 }
