@@ -261,6 +261,20 @@
                 const c = document.getElementById('projectList');
                 if (!c) return;
                 const projects = dashboardData?.projects || [];
+                
+                const statusGroups = {
+                    'completed': { title: '已完成', titleClass: 'text-green-700', projects: [] },
+                    'in_progress': { title: '開發中', titleClass: 'text-blue-700', projects: [] },
+                    'planning': { title: '規劃中', titleClass: 'text-yellow-700', projects: [] },
+                    'paused': { title: '已暫停', titleClass: 'text-gray-700', projects: [] }
+                };
+                
+                projects.forEach(p => {
+                    if (statusGroups[p.progress]) {
+                        statusGroups[p.progress].projects.push(p);
+                    }
+                });
+                
                 const getStatusBadge = (progress) => {
                     const statusMap = {
                         'completed': { label: '已完成', class: 'bg-green-100 text-green-700' },
@@ -271,7 +285,18 @@
                     const status = statusMap[progress] || { label: '未知', class: 'bg-gray-100 text-gray-500' };
                     return `<span class="px-2 py-0.5 rounded text-xs font-medium ${status.class}">${status.label}</span>`;
                 };
-                c.innerHTML = projects.map(p => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><div class="flex items-center gap-2 flex-shrink-0"><span class="text-sm text-gray-500">${p.size_kb?.toLocaleString() || 0} KB</span>${getStatusBadge(p.progress)}</div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無專案資料</p>';
+                
+                const renderProjectItem = (p) => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><div class="flex items-center gap-2 flex-shrink-0"><span class="text-sm text-gray-500">${p.size_kb?.toLocaleString() || 0} KB</span>${getStatusBadge(p.progress)}</div></div>`;
+                
+                const renderGroup = (key, group) => {
+                    if (group.projects.length === 0) return '';
+                    return `<div class="mb-4"><h4 class="font-semibold text-sm ${group.titleClass} mb-2">${group.title} (${group.projects.length})</h4><div class="space-y-1">${group.projects.map(renderProjectItem).join('')}</div></div>`;
+                };
+                
+                const order = ['completed', 'in_progress', 'planning', 'paused'];
+                const html = order.map(k => renderGroup(k, statusGroups[k])).join('');
+                
+                c.innerHTML = html || '<p class="text-gray-500 text-sm p-2">無專案資料</p>';
             } catch(e) { console.error('renderProjectList error:', e); }
         }
 
