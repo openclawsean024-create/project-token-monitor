@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project & Token Monitor Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -14,506 +13,460 @@
         .status-warning { background: #fef3c7; border-left: 4px solid #f59e0b; }
         .status-critical { background: #fee2e2; border-left: 4px solid #ef4444; }
         .status-normal { background: #ecfdf5; border-left: 4px solid #10b981; }
+        .priority-high { border-left: 4px solid #ef4444; }
+        .priority-medium { border-left: 4px solid #f59e0b; }
+        .priority-low { border-left: 4px solid #3b82f6; }
+        .progress-completed { background: #dcfce7; border-left: 4px solid #10b981; }
+        .progress-in_progress { background: #dbeafe; border-left: 4px solid #3b82f6; }
+        .progress-planning { background: #fef9c3; border-left: 4px solid #eab308; }
+        .progress-paused { background: #f3f4f6; border-left: 4px solid #6b7280; }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 640px) {
+            .project-links a {
+                padding: 0.5rem;
+            }
+            .project-links a svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+            #projectListDetail a {
+                min-width: 36px;
+                min-height: 36px;
+                justify-content: center;
+            }
+        }
+        
+        /* Sidebar toggle animation */
+        .sidebar { transition: transform 0.3s ease-in-out, width 0.3s ease-in-out; }
+        .sidebar.hidden { transform: translateX(-100%); }
+        .sidebar-overlay { display: none; }
+        @media (max-width: 768px) {
+            .sidebar-overlay { display: block; }
+            .sidebar.hidden + .sidebar-overlay { display: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
+    <!-- Mobile Header -->
+    <header class="md:hidden fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-3 flex items-center justify-between shadow-lg">
+        <button id="menuToggle" class="p-2 hover:bg-white/20 rounded-lg transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 class="text-lg font-bold truncate">Token Monitor</h1>
+        <div class="w-10"></div>
+    </header>
+
+    <div class="flex h-screen pt-14 md:pt-0">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+        <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 flex flex-col fixed md:relative inset-y-0 left-0 z-40 h-full">
             <div class="p-4 border-b border-gray-200">
-                <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                    Token Monitor
-                </h1>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">Token Monitor</h1>
                 <p class="text-xs text-gray-500">Project Dashboard</p>
             </div>
-            
-            <nav class="flex-1 p-4 space-y-1">
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
                 <a href="#overview" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-                    </svg>
-                    總覽 Overview
-                </a>
-                <a href="#token" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                    </svg>
-                    Token 分析
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>總覽 Overview</span>
                 </a>
                 <a href="#files" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-                    </svg>
-                    檔案瀏覽器
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                    <span>檔案瀏覽器</span>
                 </a>
                 <a href="#audit" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                    </svg>
-                    審計報告
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span>審計報告</span>
+                </a>
+                <a href="#projects" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>專案列表</span>
                 </a>
             </nav>
-            
             <div class="p-4 border-t border-gray-200">
-                <div class="text-xs text-gray-500">
-                    Last updated:<br>
-                    <span id="lastUpdated" class="font-medium text-gray-700">--</span>
-                </div>
+                <div class="text-xs text-gray-500">Last updated:<br><span id="lastUpdated" class="font-medium text-gray-700">--</span></div>
             </div>
         </aside>
 
+        <!-- Mobile Overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
+        <main class="flex-1 overflow-y-auto pb-8">
+            <!-- Project Meta Header -->
+            <section class="p-4 md:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="min-w-0">
+                        <h2 id="projectNameZh" class="text-xl md:text-2xl font-bold truncate">--</h2>
+                        <p id="projectNameEn" class="text-sm md:text-base text-indigo-200 truncate">--</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <a id="repoLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            <span class="hidden sm:inline">GitHub Repo</span>
+                        </a>
+                        <a id="pagesLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                            <span class="hidden sm:inline">GitHub Pages</span>
+                        </a>
+                        <a id="externalLink" href="#" target="_blank" class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition text-sm">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            <span class="hidden sm:inline">外部網站</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <!-- Overview Section -->
-            <section id="overview" class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">專案總覽</h2>
+            <section id="overview" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">專案總覽</h2>
                 
-                <!-- KPI Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-white rounded-xl p-5 shadow-sm card-hover transition border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Open Issues</p>
-                                <p id="openIssues" class="text-3xl font-bold text-gray-800">--</p>
-                            </div>
-                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                            </div>
-                        </div>
+                <!-- KPI Cards - 2x2 on mobile, 4 columns on desktop -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Open Issues</p>
+                        <p id="openIssues" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
                     </div>
-                    
-                    <div class="bg-white rounded-xl p-5 shadow-sm card-hover transition border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Pending PRs</p>
-                                <p id="pendingPRs" class="text-3xl font-bold text-gray-800">--</p>
-                            </div>
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Pending PRs</p>
+                        <p id="pendingPRs" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
                     </div>
-                    
-                    <div class="bg-white rounded-xl p-5 shadow-sm card-hover transition border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Session Avg Token</p>
-                                <p id="sessionToken" class="text-3xl font-bold text-indigo-600">--</p>
-                            </div>
-                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Session Token</p>
+                        <p id="sessionToken" class="text-2xl md:text-3xl font-bold text-indigo-600">--</p>
                     </div>
-                    
-                    <div class="bg-white rounded-xl p-5 shadow-sm card-hover transition border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Cron Avg Token</p>
-                                <p id="cronToken" class="text-3xl font-bold text-purple-600">--</p>
-                            </div>
-                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs md:text-sm text-gray-500">Cron Token</p>
+                        <p id="cronToken" class="text-2xl md:text-3xl font-bold text-purple-600">--</p>
+                    </div>
+                </div>
+
+            <!-- Execution Health -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 md:mb-3">⚡ 執行健康度</h3>
+                    <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Branch:</span><span id="branchName" class="font-medium text-gray-800 text-sm">--</span></div>
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Cron Last Run:</span><span id="cronLastRun" class="font-medium text-gray-800 text-sm">--</span></div>
+                        <div class="flex items-center gap-2"><span class="text-sm text-gray-500">Status:</span><span id="cronStatus" class="px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">--</span></div>
                     </div>
                 </div>
 
                 <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <!-- Token Trend Chart -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Token 消耗趨勢 (過去5天)</h3>
-                        <canvas id="tokenChart" height="250"></canvas>
-                    </div>
-                    
-                    <!-- Recent Activity -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">專案列表</h3>
-                        <div id="projectList" class="space-y-2 max-h-64 overflow-y-auto">
-                            <!-- Projects will be populated here -->
-                        </div>
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6 mb-4 md:mb-6">
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
+                        <div id="projectList" class="space-y-2"></div>
                     </div>
                 </div>
 
                 <!-- Top Files -->
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Context 檔案消耗 Top 5</h3>
-                    <div id="topFiles" class="space-y-2">
-                        <!-- Files will be populated here -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Token Analytics Section -->
-            <section id="token" class="p-6 bg-gray-50">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Token 分析</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white">
-                        <p class="text-indigo-100">本月預估消耗</p>
-                        <p id="monthlyProjection" class="text-4xl font-bold mt-2">--</p>
-                        <p class="text-indigo-200 text-sm mt-1">Tokens</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-gray-500 text-sm">預估成本 (USD)</p>
-                        <p id="monthlyCost" class="text-3xl font-bold text-gray-800 mt-2">--</p>
-                        <p class="text-gray-400 text-sm mt-1">@ $0.0001/token</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <p class="text-gray-500 text-sm">每日平均</p>
-                        <p id="dailyAvg" class="text-3xl font-bold text-gray-800 mt-2">--</p>
-                        <p class="text-gray-400 text-sm mt-1">Tokens/day</p>
-                    </div>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
+                    <div id="topFiles" class="space-y-2"></div>
                 </div>
 
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">每日詳細消耗</h3>
-                    <div id="dailyUsageTable" class="overflow-x-auto">
-                        <!-- Table will be populated here -->
-                    </div>
+                <!-- Recent Commits -->
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">最近 Commit 紀錄</h3>
+                    <div id="recentCommits" class="space-y-2"></div>
                 </div>
             </section>
 
             <!-- File Explorer Section -->
-            <section id="files" class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">檔案瀏覽器</h2>
-                
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-800">所有 MD 檔案</h3>
-                        <div class="flex items-center gap-2">
-                            <input type="text" id="fileSearch" placeholder="搜尋檔案..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
+            <section id="files" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">檔案瀏覽器</h2>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 md:mb-4 gap-2">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800">所有 MD 檔案</h3>
+                        <input type="text" id="fileSearch" placeholder="搜尋檔案..." class="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    
-                    <div id="fileExplorer" class="space-y-1 max-h-96 overflow-y-auto">
-                        <!-- Files will be populated here -->
-                    </div>
+                    <div id="fileExplorer" class="space-y-1 max-h-72 md:max-h-96 overflow-y-auto"></div>
                 </div>
             </section>
 
             <!-- Audit Section -->
-            <section id="audit" class="p-6 bg-gray-50">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">審計報告</h2>
-                
-                <!-- Priority Actions -->
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">🚀 24小時內優先處理項目</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
-                            <span class="text-red-500 font-bold">1.</span>
-                            <div>
-                                <p class="font-medium text-gray-800">立即行動 - Context 減肥</p>
-                                <p class="text-sm text-gray-600">拆分過大的 .md 檔案，預估可節省 200K+ Tokens/session</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
-                            <span class="text-yellow-500 font-bold">2.</span>
-                            <div>
-                                <p class="font-medium text-gray-800">結構調整 - 倉庫清理</p>
-                                <p class="text-sm text-gray-600">移除 node_modules，合併重複專案</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                            <span class="text-blue-500 font-bold">3.</span>
-                            <div>
-                                <p class="font-medium text-gray-800">代碼提交 - 自動化</p>
-                                <p class="text-sm text-gray-600">建立統一的 GitHub Actions CI/CD</p>
-                            </div>
-                        </div>
-                    </div>
+            <section id="audit" class="p-4 md:p-6 bg-gray-50">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">審計報告</h2>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">🚀 優先行動清單</h3>
+                    <div id="actionItems" class="space-y-3"></div>
                 </div>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 overflow-x-auto">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">⚔️ 競品對標與功能缺口</h3>
+                    <div id="competitorGaps"></div>
+                </div>
+            </section>
 
-                <!-- Competitor Analysis -->
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">⚔️ 競品對標與功能缺口</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b border-gray-200">
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">功能區塊</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">本專案狀態</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">競品 A</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">競品 B</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">建議動作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-3 px-4">表單系統</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">完整</span></td>
-                                    <td class="py-3 px-4 text-gray-500">Typeform</td>
-                                    <td class="py-3 px-4 text-gray-500">JotForm</td>
-                                    <td class="py-3 px-4 text-indigo-600">增加離線支援</td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-3 px-4">數據看板</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">完整</span></td>
-                                    <td class="py-3 px-4 text-gray-500">Grafana</td>
-                                    <td class="py-3 px-4 text-gray-500">DataDog</td>
-                                    <td class="py-3 px-4 text-indigo-600">WebSocket 即時</td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-3 px-4">內容收集</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">基礎</span></td>
-                                    <td class="py-3 px-4 text-gray-500">Zapier</td>
-                                    <td class="py-3 px-4 text-gray-500">Make.com</td>
-                                    <td class="py-3 px-4 text-indigo-600">AI 摘要功能</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 px-4">簡報生成</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">需優化</span></td>
-                                    <td class="py-3 px-4 text-gray-500">Gamma</td>
-                                    <td class="py-3 px-4 text-gray-500">Tome</td>
-                                    <td class="py-3 px-4 text-indigo-600">整合 AI 圖像</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <!-- Projects Section -->
+            <section id="projects" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">專案列表</h2>
+                <div id="projectListDetail" class="space-y-4"></div>
             </section>
         </main>
     </div>
 
     <script>
-        // Global data store
         let dashboardData = null;
-        let tokenChart = null;
+        
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('hidden');
+        }
+        
+        menuToggle?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', toggleSidebar);
 
-        // Load data
         async function loadData() {
-            try {
-                const response = await fetch('./data/dashboard-data.json');
-                dashboardData = await response.json();
-                renderDashboard();
-            } catch (error) {
-                console.error('Failed to load data:', error);
-                // Try alternative path
-                try {
-                    const response = await fetch('../data/dashboard-data.json');
-                    dashboardData = await response.json();
-                    renderDashboard();
-                } catch (e) {
-                    document.getElementById('lastUpdated').textContent = '資料載入失敗';
-                }
+            // Determine base path for GitHub Pages subdirectory
+            const pathParts = window.location.pathname.split('/').filter(p => p);
+            const basePath = pathParts.length > 0 ? '/' + pathParts[0] : '';
+            const dataPath = basePath + '/data/dashboard-data.json';
+            console.log('Loading from:', dataPath);
+            try { 
+                const r = await fetch(dataPath); 
+                if (!r.ok) throw new Error('Network response was not ok: ' + r.status);
+                dashboardData = await r.json(); 
+                console.log('Data loaded successfully:', dashboardData);
+                renderDashboard(); 
+            } catch(e) { 
+                console.error('Data load error:', e);
+                // Try alternative paths
+                try { 
+                    const r = await fetch('./data/dashboard-data.json'); 
+                    if (!r.ok) throw new Error('Network response was not ok');
+                    dashboardData = await r.json(); 
+                    renderDashboard(); 
+                } catch(e2) { 
+                    console.error('Fallback load error:', e2);
+                    const lastUpdatedEl = document.getElementById('lastUpdated');
+                    if (lastUpdatedEl) lastUpdatedEl.textContent = '資料載入失敗'; 
+                } 
             }
         }
 
         function renderDashboard() {
             if (!dashboardData) return;
-
-            // Update last updated
-            const date = new Date(dashboardData.last_updated);
-            document.getElementById('lastUpdated').textContent = date.toLocaleString('zh-TW');
-
-            // KPIs
-            document.getElementById('openIssues').textContent = dashboardData.github_status?.open_issues || 0;
-            document.getElementById('pendingPRs').textContent = dashboardData.github_status?.pending_prs || 0;
-            document.getElementById('sessionToken').textContent = dashboardData.token_metrics?.session_avg?.toLocaleString() || '--';
-            document.getElementById('cronToken').textContent = dashboardData.token_metrics?.cron_avg?.toLocaleString() || '--';
-
-            // Monthly metrics
-            document.getElementById('monthlyProjection').textContent = (dashboardData.token_metrics?.monthly_projection || 0).toLocaleString();
-            document.getElementById('monthlyCost').textContent = '$' + (dashboardData.token_metrics?.monthly_cost_usd || 0);
-            const dailyAvg = dashboardData.token_metrics?.daily_usage?.reduce((sum, d) => sum + d.abab6_5s + d.abab7, 0) / 5 || 0;
-            document.getElementById('dailyAvg').textContent = Math.round(dailyAvg).toLocaleString();
-
-            // Render project list
-            renderProjectList();
-
-            // Render top files
-            renderTopFiles();
-
-            // Render all files
-            renderFileExplorer();
-
-            // Render token chart
-            renderTokenChart();
-
-            // Render daily usage table
-            renderDailyUsageTable();
+            
+            // Helper to safely set textContent
+            const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            
+            const m = dashboardData.project_meta || {};
+            setText('projectNameZh', m.name_zh || '--');
+            setText('projectNameEn', m.name_en || '--');
+            document.getElementById('repoLink').href = m.links?.repo || '#';
+            document.getElementById('pagesLink').href = m.links?.pages || '#';
+            const el = document.getElementById('externalLink'); 
+            if (el) { el.style.display = m.links?.external ? 'flex' : 'none'; el.href = m.links?.external || '#'; }
+            setText('lastUpdated', new Date(m.last_updated || dashboardData.last_updated).toLocaleString('zh-TW'));
+            
+            const gh = dashboardData.github_status || {};
+            setText('openIssues', gh.open_issues || 0);
+            setText('pendingPRs', gh.pending_prs || 0);
+            setText('branchName', gh.branch || '--');
+            
+            const tm = dashboardData.token_metrics || {};
+            setText('sessionToken', (tm.session_avg_tokens || 0).toLocaleString());
+            setText('cronToken', (tm.cron_avg_tokens || 0).toLocaleString());
+            
+            const ch = tm.cron_health || {};
+            setText('cronLastRun', ch.last_run ? new Date(ch.last_run).toLocaleString('zh-TW') : '--');
+            const se = document.getElementById('cronStatus');
+            if (se) {
+                se.textContent = ch.status === 'success' ? '✅ 正常' : ch.status === 'failed' ? '❌ 失敗' : '⚠️ 未知';
+                se.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ' + (ch.status === 'success' ? 'bg-green-100 text-green-700' : ch.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700');
+            }
+            
+            renderProjectList(); renderProjectListDetail(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
         }
 
         function renderProjectList() {
-            const container = document.getElementById('projectList');
-            const projects = dashboardData.projects?.slice(0, 10) || [];
-            
-            container.innerHTML = projects.map(p => `
-                <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span>
-                        <span class="font-medium text-gray-700">${p.name}</span>
-                    </div>
-                    <span class="text-sm text-gray-500">${p.size_kb.toLocaleString()} KB</span>
-                </div>
-            `).join('');
+            try {
+                const c = document.getElementById('projectList');
+                if (!c) return;
+                const projects = dashboardData?.projects || [];
+                
+                const statusGroups = {
+                    'completed': { title: '已完成', titleClass: 'text-green-700', projects: [] },
+                    'in_progress': { title: '開發中', titleClass: 'text-blue-700', projects: [] },
+                    'planning': { title: '規劃中', titleClass: 'text-yellow-700', projects: [] },
+                    'paused': { title: '已暫停', titleClass: 'text-gray-700', projects: [] }
+                };
+                
+                projects.forEach(p => {
+                    if (statusGroups[p.progress]) {
+                        statusGroups[p.progress].projects.push(p);
+                    }
+                });
+                
+                const getStatusBadge = (progress) => {
+                    const statusMap = {
+                        'completed': { label: '已完成', class: 'bg-green-100 text-green-700' },
+                        'in_progress': { label: '開發中', class: 'bg-blue-100 text-blue-700' },
+                        'planning': { label: '規劃中', class: 'bg-yellow-100 text-yellow-700' },
+                        'paused': { label: '已暫停', class: 'bg-gray-100 text-gray-700' }
+                    };
+                    const status = statusMap[progress] || { label: '未知', class: 'bg-gray-100 text-gray-500' };
+                    return `<span class="px-2 py-0.5 rounded text-xs font-medium ${status.class}">${status.label}</span>`;
+                };
+                
+                const renderProjectItem = (p) => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"><div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span><div class="min-w-0"><p class="font-medium text-gray-700 truncate">${p.name}</p><p class="text-xs text-gray-500 truncate">${p.description || ''}</p></div></div><div class="flex items-center gap-2 flex-shrink-0"><span class="text-sm text-gray-500">${p.size_kb?.toLocaleString() || 0} KB</span>${getStatusBadge(p.progress)}</div></div>`;
+                
+                const renderGroup = (key, group) => {
+                    if (group.projects.length === 0) return '';
+                    return `<div class="mb-4"><h4 class="font-semibold text-sm ${group.titleClass} mb-2">${group.title} (${group.projects.length})</h4><div class="space-y-1">${group.projects.map(renderProjectItem).join('')}</div></div>`;
+                };
+                
+                const order = ['completed', 'in_progress', 'planning', 'paused'];
+                const html = order.map(k => renderGroup(k, statusGroups[k])).join('');
+                
+                c.innerHTML = html || '<p class="text-gray-500 text-sm p-2">無專案資料</p>';
+            } catch(e) { console.error('renderProjectList error:', e); }
+        }
+
+        function renderProjectListDetail() {
+            try {
+                const c = document.getElementById('projectListDetail');
+                if (!c) return;
+                const projects = dashboardData?.projects || [];
+                
+                const getStatusBadge = (progress) => {
+                    const statusMap = {
+                        'completed': { label: '已完成', class: 'bg-green-100 text-green-700' },
+                        'in_progress': { label: '開發中', class: 'bg-blue-100 text-blue-700' },
+                        'planning': { label: '規劃中', class: 'bg-yellow-100 text-yellow-700' },
+                        'paused': { label: '已暫停', class: 'bg-gray-100 text-gray-700' }
+                    };
+                    const status = statusMap[progress] || { label: '未知', class: 'bg-gray-100 text-gray-500' };
+                    return `<span class="px-2.5 py-1 rounded-full text-xs font-medium ${status.class}">${status.label}</span>`;
+                };
+
+                const githubIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`;
+                const externalIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>`;
+                const pagesIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>`;
+
+                const renderProjectCard = (p) => {
+                    const links = [];
+                    const org = 'openclawsean024-create';
+                    const repoLink = p.links?.repo || (p.path ? `https://github.com/${org}/${p.path}` : null);
+                    const pagesLink = p.links?.pages || (p.path ? `https://${org}.github.io/${p.path}/` : null);
+                    const externalLink = p.links?.external || null;
+
+                    if (repoLink) {
+                        links.push(`<a href="${repoLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="GitHub 倉庫">${githubIcon}<span class="hidden sm:inline">Repo</span></a>`);
+                    }
+                    if (pagesLink) {
+                        links.push(`<a href="${pagesLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="GitHub Pages">${pagesIcon}<span class="hidden sm:inline">Pages</span></a>`);
+                    }
+                    if (externalLink) {
+                        links.push(`<a href="${externalLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="外部網站">${externalIcon}<span class="hidden sm:inline">網站</span></a>`);
+                    }
+
+                    return `
+                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span>
+                                    <h3 class="font-semibold text-gray-800 truncate">${p.name}</h3>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-2 line-clamp-2">${p.description || '無描述'}</p>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">下一步: ${p.next_action || '未設定'}</span>
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">負責人: ${p.owner || '未指定'}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">${links.join('')}</div>
+                            </div>
+                            <div class="flex-shrink-0 sm:ml-4">${getStatusBadge(p.progress)}</div>
+                        </div>
+                    </div>`;
+                };
+
+                const statusGroups = {
+                    'completed': { title: '已完成', titleClass: 'text-green-700', projects: [] },
+                    'in_progress': { title: '開發中', titleClass: 'text-blue-700', projects: [] },
+                    'planning': { title: '規劃中', titleClass: 'text-yellow-700', projects: [] },
+                    'paused': { title: '已暫停', titleClass: 'text-gray-700', projects: [] }
+                };
+                
+                projects.forEach(p => {
+                    if (statusGroups[p.progress]) {
+                        statusGroups[p.progress].projects.push(p);
+                    }
+                });
+
+                const renderGroup = (key, group) => {
+                    if (group.projects.length === 0) return '';
+                    return `<div class="mb-6"><h3 class="font-semibold text-base ${group.titleClass} mb-3">${group.title} (${group.projects.length})</h3><div class="space-y-3">${group.projects.map(renderProjectCard).join('')}</div></div>`;
+                };
+
+                const order = ['completed', 'in_progress', 'planning', 'paused'];
+                const html = order.map(k => renderGroup(k, statusGroups[k])).join('');
+
+                c.innerHTML = html || '<p class="text-gray-500 text-sm p-4 bg-white rounded-xl">無專案資料</p>';
+            } catch(e) { console.error('renderProjectListDetail error:', e); }
         }
 
         function renderTopFiles() {
-            const container = document.getElementById('topFiles');
-            const files = dashboardData.file_explorer?.slice(0, 5) || [];
-            
-            container.innerHTML = files.map(f => {
-                const statusClass = f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal';
-                return `
-                    <div class="flex items-center justify-between p-3 rounded-lg ${statusClass}">
-                        <div class="flex-1">
-                            <p class="font-medium text-gray-800 text-sm">${f.path}</p>
-                            <p class="text-xs text-gray-500">${f.size_kb} KB</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">
-                                ${f.est_tokens.toLocaleString()}
-                            </p>
-                            <p class="text-xs text-gray-500">tokens</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            try {
+                const c = document.getElementById('topFiles');
+                if (!c) return;
+                const files = dashboardData?.file_explorer || [];
+                c.innerHTML = files.slice(0, 5).map(f => `<div class="flex items-center justify-between p-2 md:p-3 rounded-lg ${f.status === 'critical' ? 'status-critical' : f.status === 'warning' ? 'status-warning' : 'status-normal'}"><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${f.path}</p><p class="text-xs text-gray-500">${f.size_kb} KB · ${f.last_modified || '--'}</p></div><div class="text-right flex-shrink-0 ml-2"><p class="font-bold ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens?.toLocaleString() || 0}</p><p class="text-xs text-gray-500">tokens</p></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無檔案資料</p>';
+            } catch(e) { console.error('renderTopFiles error:', e); }
+        }
+
+        function renderRecentCommits() {
+            try {
+                const c = document.getElementById('recentCommits');
+                if (!c) return;
+                const commits = dashboardData?.github_status?.recent_commits || [];
+                c.innerHTML = commits.map((commit, i) => `<div class="flex items-start gap-3 p-2 hover:bg-gray-50 rounded-lg"><div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-indigo-600 font-bold text-sm">${i+1}</span></div><div class="flex-1 min-w-0"><p class="font-medium text-gray-800 text-sm truncate">${commit.message}</p><div class="flex items-center gap-2 mt-1 text-xs text-gray-500"><span>${commit.author}</span><span>·</span><span>${commit.date ? new Date(commit.date).toLocaleString('zh-TW') : '--'}</span></div></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無 Commit 紀錄</p>';
+            } catch(e) { console.error('renderRecentCommits error:', e); }
         }
 
         function renderFileExplorer() {
-            const container = document.getElementById('fileExplorer');
-            const files = dashboardData.file_explorer || [];
-            
-            container.innerHTML = files.map(f => {
-                const statusClass = f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600';
-                const statusIcon = f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢';
-                return `
-                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm">
-                        <div class="flex items-center gap-2">
-                            <span>${statusIcon}</span>
-                            <span class="text-gray-700">${f.path}</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-xs text-gray-500">
-                            <span>${f.size_kb} KB</span>
-                            <span class="font-medium ${statusClass}">${f.est_tokens.toLocaleString()} tokens</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Search functionality
-            document.getElementById('fileSearch').addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                const items = container.querySelectorAll('div');
-                items.forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(query) ? 'flex' : 'none';
-                });
-            });
-        }
-
-        function renderTokenChart() {
-            const ctx = document.getElementById('tokenChart').getContext('2d');
-            const dailyData = dashboardData.token_metrics?.daily_usage || [];
-            
-            const labels = dailyData.map(d => d.date);
-            const abab65sData = dailyData.map(d => d.abab6_5s);
-            const abab7Data = dailyData.map(d => d.abab7);
-
-            if (tokenChart) tokenChart.destroy();
-
-            tokenChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'abab6.5s',
-                            data: abab65sData,
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'abab7',
-                            data: abab7Data,
-                            borderColor: '#8b5cf6',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: (value) => value.toLocaleString()
-                            }
-                        }
-                    }
+            try {
+                const c = document.getElementById('fileExplorer');
+                if (!c) return;
+                const files = dashboardData?.file_explorer || [];
+                c.innerHTML = files.map(f => `<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded text-sm"><div class="flex items-center gap-2 min-w-0"><span>${f.status === 'critical' ? '🔴' : f.status === 'warning' ? '🟡' : '🟢'}</span><span class="text-gray-700 truncate">${f.path}</span></div><div class="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-shrink-0"><span class="hidden md:inline">${f.last_modified || '--'}</span><span>${f.size_kb} KB</span><span class="font-medium ${f.status === 'critical' ? 'text-red-600' : f.status === 'warning' ? 'text-yellow-600' : 'text-green-600'}">${f.est_tokens?.toLocaleString() || 0}</span></div></div>`).join('') || '<p class="text-gray-500 text-sm p-2">無檔案資料</p>';
+                const searchInput = document.getElementById('fileSearch');
+                if (searchInput) {
+                    searchInput.addEventListener('input', e => { const q = e.target.value.toLowerCase(); c.querySelectorAll('div').forEach(i => i.style.display = i.textContent.toLowerCase().includes(q) ? 'flex' : 'none'); });
                 }
-            });
+            } catch(e) { console.error('renderFileExplorer error:', e); }
         }
 
         function renderDailyUsageTable() {
-            const container = document.getElementById('dailyUsageTable');
-            const dailyData = dashboardData.token_metrics?.daily_usage || [];
-            
-            let html = `
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-gray-200">
-                            <th class="text-left py-3 px-4 font-semibold text-gray-700">日期</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-700">abab6.5s</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-700">abab7</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-700">總計</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            dailyData.forEach(d => {
-                const total = d.abab6_5s + d.abab7;
-                html += `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50">
-                        <td class="py-3 px-4 font-medium">${d.date}</td>
-                        <td class="py-3 px-4 text-indigo-600">${d.abab6_5s.toLocaleString()}</td>
-                        <td class="py-3 px-4 text-purple-600">${d.abab7.toLocaleString()}</td>
-                        <td class="py-3 px-4 font-bold text-gray-800">${total.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-            
-            html += '</tbody></table>';
-            container.innerHTML = html;
+            const c = document.getElementById('dailyUsageTable');
+            const d = dashboardData.token_metrics?.daily_usage || [];
+            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">日期</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">abab6.5s</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">abab7</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">總計</th></tr></thead><tbody>${d.map(x => `<tr class="border-b border-gray-100 hover:bg-gray-50"><td class="py-2 md:py-3 px-2 md:px-4 font-medium">${x.date}</td><td class="py-2 md:py-3 px-2 md:px-4 text-indigo-600">${(x.abab6_5s||0).toLocaleString()}</td><td class="py-2 md:py-3 px-2 md:px-4 text-purple-600">${(x.abab7||0).toLocaleString()}</td><td class="py-2 md:py-3 px-2 md:px-4 font-bold text-gray-800">${((x.abab6_5s||0)+(x.abab7||0)).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;
         }
 
-        // Smooth scroll for navigation
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                const target = item.getAttribute('href').substring(1);
-                document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+        function renderActionItems() {
+            const c = document.getElementById('actionItems');
+            const items = dashboardData.audit_and_insights?.action_items || [];
+            c.innerHTML = items.map((item, i) => `<div class="flex items-start gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 rounded-lg ${item.priority === 'high' ? 'priority-high' : item.priority === 'medium' ? 'priority-medium' : 'priority-low'}"><span class="text-gray-400 font-bold flex-shrink-0">${i+1}.</span><div class="flex-1 min-w-0"><div class="flex flex-wrap items-center gap-1 md:gap-2 mb-1"><span class="px-2 py-0.5 bg-gray-200 text-gray-700 rounded text-xs">${item.category==='immediate'?'立即行動':item.category==='structure'?'結構調整':item.category==='automation'?'自動化':item.category==='optimization'?'優化':'文件'}</span><span class="text-xs md:text-sm font-medium">${item.priority==='high'?'🔴 高':item.priority==='medium'?'🟡 中':'🔵 低'}</span></div><p class="font-medium text-gray-800 text-sm">${item.task}</p><p class="text-xs md:text-sm text-gray-500 mt-1">${item.reason||''}</p></div></div>`).join('');
+        }
 
-        // Initialize
-        loadData();
+        function renderCompetitorGaps() {
+            const c = document.getElementById('competitorGaps');
+            const gaps = dashboardData.audit_and_insights?.competitor_gaps || [];
+            c.innerHTML = `<table class="w-full text-sm"><thead><tr class="border-b border-gray-200"><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">功能</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">狀態</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700">影響</th><th class="text-left py-2 md:py-3 px-2 md:px-4 font-semibold text-gray-700 hidden md:table-cell">建議</th></tr></thead><tbody>${gaps.map(g => `<tr class="border-b border-gray-100"><td class="py-2 md:py-3 px-2 md:px-4">${g.feature}</td><td class="py-2 md:py-3 px-2 md:px-4">${g.status==='missing'?'<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">缺少</span>':g.status==='partial'?'<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">部分</span>':'<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">完整</span>'}</td><td class="py-2 md:py-3 px-2 md:px-4 ${g.impact==='high'?'text-red-600 font-medium':g.impact==='medium'?'text-yellow-600 font-medium':'text-blue-600 font-medium'}">${g.impact==='high'?'高':g.impact==='medium'?'中':'低'}</td><td class="py-2 md:py-3 px-2 md:px-4 text-gray-600 hidden md:table-cell">${g.suggestion||''}</td></tr>`).join('')}</tbody></table>`;
+        }
 
-        // Auto refresh every 5 minutes
-        setInterval(loadData, 5 * 60 * 1000);
+        document.querySelectorAll('.sidebar-item').forEach(item => { item.addEventListener('click', e => { document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active')); item.classList.add('active'); if(window.innerWidth<768) sidebar.classList.add('hidden'); document.getElementById(item.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth' }); }); });
+        
+        loadData(); setInterval(loadData, 5*60*1000);
     </script>
 </body>
 </html>

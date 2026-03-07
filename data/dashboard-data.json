@@ -1,62 +1,139 @@
 {
-  "last_updated": "2026-03-06T09:05:00Z",
+  "project_meta": {
+    "name_zh": "Project & Token Monitor Dashboard",
+    "name_en": "Project Health & Token Analytics Dashboard",
+    "links": {
+      "repo": "https://github.com/openclawsean024-create/project-token-monitor",
+      "pages": "https://openclawsean024-create.github.io/project-token-monitor/",
+      "external": ""
+    },
+    "last_updated": "2026-03-06T10:55:00Z"
+  },
   "github_status": {
     "branch": "main",
     "open_issues": 3,
-    "pending_prs": 2
+    "pending_prs": 2,
+    "recent_commits": [
+      {"sha": "be35214", "message": "Remove Token consumption trend chart", "author": "Sean", "date": "2026-03-06T10:50:00Z"},
+      {"sha": "6d2e7a5", "message": "Remove Token analytics section", "author": "Sean", "date": "2026-03-06T10:40:00Z"},
+      {"sha": "f086e76", "message": "Change token chart to stacked bar chart", "author": "Sean", "date": "2026-03-06T10:30:00Z"}
+    ]
   },
-  "recent_commits": [
-    {
-      "message": "Add token monitoring dashboard",
-      "author": "Sean",
-      "date": "2026-03-06T08:00:00Z"
-    },
-    {
-      "message": "Update data collection script",
-      "author": "Sean",
-      "date": "2026-03-05T14:30:00Z"
-    },
-    {
-      "message": "Initial commit",
-      "author": "Sean",
-      "date": "2026-03-04T10:00:00Z"
-    }
-  ],
   "token_metrics": {
-    "session_avg": 4500,
-    "cron_avg": 1200,
+    "session_avg_tokens": 4500,
+    "cron_avg_tokens": 1200,
+    "cron_health": {
+      "last_run": "2026-03-06T10:55:00Z",
+      "status": "success"
+    },
+    "cost_estimate_usd": 55.8,
+    "monthly_projection": 558000,
     "daily_usage": [
       {"date": "03-02", "abab6_5s": 12000, "abab7": 5000},
       {"date": "03-03", "abab6_5s": 13500, "abab7": 5500},
       {"date": "03-04", "abab6_5s": 11000, "abab7": 4800},
       {"date": "03-05", "abab6_5s": 14500, "abab7": 6200},
       {"date": "03-06", "abab6_5s": 13000, "abab7": 5800}
-    ],
-    "monthly_projection": 558000,
-    "monthly_cost_usd": 55.8
+    ]
   },
   "file_explorer": [
-    {"path": "skills/afrexai-presentation-mastery/SKILL.md", "size_kb": 22.2, "est_tokens": 22200, "status": "critical"},
-    {"path": "skills/stripe/skill.md", "size_kb": 26.1, "est_tokens": 26100, "status": "critical"},
-    {"path": "skills/prezentit/SKILL.md", "size_kb": 21.9, "est_tokens": 21900, "status": "critical"},
-    {"path": "skills/skill-vetting/ARCHITECTURE.md", "size_kb": 11.1, "est_tokens": 11065, "status": "warning"},
-    {"path": "PROJECT-DASHBOARD.md", "size_kb": 8.8, "est_tokens": 8800, "status": "warning"},
-    {"path": "skills/slidespeak/references/API.md", "size_kb": 8.9, "est_tokens": 8858, "status": "warning"},
-    {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "status": "warning"},
-    {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "status": "warning"},
-    {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "status": "warning"},
-    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "status": "warning"}
+    {"path": "skills/afrexai-presentation-mastery/SKILL.md", "size_kb": 22.2, "est_tokens": 22200, "last_modified": "2026-02-15", "status": "critical"},
+    {"path": "skills/stripe/skill.md", "size_kb": 26.1, "est_tokens": 26100, "last_modified": "2026-02-20", "status": "critical"},
+    {"path": "skills/prezentit/SKILL.md", "size_kb": 21.9, "est_tokens": 21900, "last_modified": "2026-02-18", "status": "critical"},
+    {"path": "skills/skill-vetting/ARCHITECTURE.md", "size_kb": 11.1, "est_tokens": 11065, "last_modified": "2026-01-28", "status": "warning"},
+    {"path": "PROJECT-DASHBOARD.md", "size_kb": 8.8, "est_tokens": 8800, "last_modified": "2026-03-05", "status": "warning"},
+    {"path": "skills/slidespeak/references/API.md", "size_kb": 8.9, "est_tokens": 8858, "last_modified": "2026-02-10", "status": "warning"},
+    {"path": "skills/agentmail/references/EXAMPLES.md", "size_kb": 14.1, "est_tokens": 14140, "last_modified": "2026-02-05", "status": "warning"},
+    {"path": "AGENTS.md", "size_kb": 7.8, "est_tokens": 7800, "last_modified": "2026-03-06", "status": "warning"},
+    {"path": "openclaw-exporter/README.md", "size_kb": 6.0, "est_tokens": 6000, "last_modified": "2026-01-15", "status": "warning"},
+    {"path": "token-dashboard-temp/TOKEN-DASHBOARD.md", "size_kb": 6.4, "est_tokens": 6400, "last_modified": "2026-03-01", "status": "warning"},
+    {"path": "skills/github/SKILL.md", "size_kb": 5.2, "est_tokens": 5200, "last_modified": "2026-02-01", "status": "normal"},
+    {"path": "skills/weather/SKILL.md", "size_kb": 4.8, "est_tokens": 4800, "last_modified": "2026-01-20", "status": "normal"},
+    {"path": "memory/2026-03-05.md", "size_kb": 1.6, "est_tokens": 1600, "last_modified": "2026-03-05", "status": "normal"},
+    {"path": "memory/2026-03-06.md", "size_kb": 2.1, "est_tokens": 2100, "last_modified": "2026-03-06", "status": "normal"}
   ],
+  "audit_and_insights": {
+    "action_items": [
+      {
+        "priority": "high",
+        "category": "immediate",
+        "task": "拆分 skills/afrexai-presentation-mastery/SKILL.md (22.2KB) 以降低啟動 Token",
+        "reason": "單一檔案佔用 22,200 Tokens，影響每次 Session 啟動速度"
+      },
+      {
+        "priority": "high",
+        "category": "structure",
+        "task": "倉庫清理：移除 report-form 中的 node_modules",
+        "reason": "該專案體積達 24MB，其中大部分為 node_modules"
+      },
+      {
+        "priority": "medium",
+        "category": "automation",
+        "task": "建立統一的 GitHub Actions CI/CD 流程",
+        "reason": "目前各專案自動化程度不一，需整合以提升效率"
+      },
+      {
+        "priority": "medium",
+        "category": "optimization",
+        "task": "實作 RAG 模式載入 Skills 文件",
+        "reason": "全載入Skills消耗約299KB，改用RAG可節省80%以上"
+      },
+      {
+        "priority": "low",
+        "category": "docs",
+        "task": "為所有專案補齊 README.md 文件",
+        "reason": "部分專案缺少說明文件，不利於維護與交接"
+      }
+    ],
+    "competitor_gaps": [
+      {
+        "feature": "串接外部 API 即時搜尋",
+        "status": "missing",
+        "impact": "high",
+        "suggestion": "整合 Tavily/Exa API 實現 RAG 即時檢索"
+      },
+      {
+        "feature": "WebSocket 即時數據更新",
+        "status": "missing",
+        "impact": "medium",
+        "suggestion": "目前僅支援輪詢，可改用 WebSocket 提升即時性"
+      },
+      {
+        "feature": "多模型支援",
+        "status": "partial",
+        "impact": "medium",
+        "suggestion": "目前僅支援 MiniMax，可擴充支援 OpenAI/Claude 等"
+      },
+      {
+        "feature": "離線支援 / PWA",
+        "status": "missing",
+        "impact": "low",
+        "suggestion": "實作 PWA 使儀表板可離線存取"
+      }
+    ]
+  },
   "projects": [
-    {"name": "report-form", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112},
-    {"name": "openclaw-exporter", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052},
-    {"name": "ergonomic-presentation", "path": "ergonomic-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 2681},
-    {"name": "ebook-to-audiobook", "path": "ebook-to-audiobook", "is_git_repo": true, "md_files": 2, "size_kb": 1131},
-    {"name": "staff-reporting-system", "path": "staff-reporting-system", "is_git_repo": true, "md_files": 0, "size_kb": 121},
-    {"name": "sui-blog", "path": "sui-blog", "is_git_repo": true, "md_files": 1, "size_kb": 39},
-    {"name": "youtube-trending-collector", "path": "youtube-trending-collector", "is_git_repo": true, "md_files": 1, "size_kb": 39},
-    {"name": "trade-backtest", "path": "trade-backtest", "is_git_repo": true, "md_files": 0, "size_kb": 47},
-    {"name": "token-dashboard-temp", "path": "token-dashboard-temp", "is_git_repo": true, "md_files": 1, "size_kb": 20},
-    {"name": "ai-interview-assistant", "path": "ai-interview-assistant", "is_git_repo": true, "md_files": 0, "size_kb": 71}
+    {"name": "report-form", "name_zh": "門市巡訪回報系統", "path": "report-form", "is_git_repo": true, "md_files": 1, "size_kb": 24112, "description": "門市巡訪回報系統", "progress": "completed", "owner": "Sean", "next_action": "優化使用者介面"},
+    {"name": "openclaw-exporter", "name_zh": "羅技數據導出工具", "path": "openclaw-exporter", "is_git_repo": true, "md_files": 2, "size_kb": 18052, "description": "羅技數據導出工具", "progress": "in_progress", "owner": "Sean", "next_action": "新增匯出格式支援"},
+    {"name": "project-token-monitor", "name_zh": "專案 Token 監控儀表板", "path": "project-token-monitor", "is_git_repo": true, "md_files": 1, "size_kb": 35, "description": "專案 Token 監控儀表板", "progress": "in_progress", "owner": "Sean", "next_action": "新增圖表功能"},
+    {"name": "ergonomic-presentation", "name_zh": "人體工學簡報系統", "path": "ergonomic-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 2681, "description": "人體工學簡報系統", "progress": "planning", "owner": "Sean", "next_action": "規劃系統架構"},
+    {"name": "ebook-to-audiobook", "name_zh": "有聲書轉換器", "path": "ebook-to-audiobook", "is_git_repo": true, "md_files": 2, "size_kb": 1131, "description": "有聲書轉換器", "progress": "in_progress", "owner": "Sean", "next_action": "優化音訊品質"},
+    {"name": "staff-reporting-system", "name_zh": "駐點人員回報系統", "path": "staff-reporting-system", "is_git_repo": true, "md_files": 0, "size_kb": 121, "description": "駐點人員回報系統", "progress": "planning", "owner": "Sean", "next_action": "建立資料庫結構"},
+    {"name": "sui-blog", "name_zh": "SUI 區塊鏈部落格", "path": "sui-blog", "is_git_repo": true, "md_files": 1, "size_kb": 39, "description": "SUI 區塊鏈部落格", "progress": "paused", "owner": "Sean", "next_action": "等待 API 穩定"},
+    {"name": "youtube-trending-collector", "name_zh": "YouTube 趨勢收集器", "path": "youtube-trending-collector", "is_git_repo": true, "md_files": 1, "size_kb": 39, "description": "YouTube 趨勢收集器", "progress": "completed", "owner": "Sean", "next_action": "部署上線"},
+    {"name": "trade-backtest", "name_zh": "交易回測系統", "path": "trade-backtest", "is_git_repo": true, "md_files": 0, "size_kb": 47, "description": "交易回測系統", "progress": "planning", "owner": "Sean", "next_action": "研究回測演算法"},
+    {"name": "token-dashboard-temp", "name_zh": "Token 儀表板 (暫存)", "path": "token-dashboard-temp", "is_git_repo": true, "md_files": 1, "size_kb": 20, "description": "Token 儀表板 (暫存)", "progress": "completed", "owner": "Sean", "next_action": "整合主儀表板"},
+    {"name": "ai-interview-assistant", "name_zh": "AI 面試助手", "path": "ai-interview-assistant", "is_git_repo": true, "md_files": 0, "size_kb": 71, "description": "AI 面試助手", "progress": "in_progress", "owner": "Sean", "next_action": "新增問題庫"},
+    {"name": "meeting-recorder", "name_zh": "會議記錄系統", "path": "meeting-recorder", "is_git_repo": true, "md_files": 0, "size_kb": 17, "description": "會議記錄系統", "progress": "completed", "owner": "Sean", "next_action": "新增搜尋功能"},
+    {"name": "business-card-manager", "name_zh": "名片管理系統", "path": "business-card-manager", "is_git_repo": true, "md_files": 1, "size_kb": 30, "description": "名片管理系統", "progress": "completed", "owner": "Sean", "next_action": "優化OCR辨識"},
+    {"name": "openclaw-news-collector", "name_zh": "新聞收集器", "path": "openclaw-news-collector", "is_git_repo": true, "md_files": 1, "size_kb": 37, "description": "新聞收集器", "progress": "paused", "owner": "Sean", "next_action": "評估其他資料源"},
+    {"name": "ptt-tracker", "name_zh": "PTT 追蹤器", "path": "ptt-tracker", "is_git_repo": true, "md_files": 1, "size_kb": 18, "description": "PTT 追蹤器", "progress": "completed", "owner": "Sean", "next_action": "新增關鍵字通知"},
+    {"name": "marathon-pace-bracelet", "name_zh": "馬拉松配速手環", "path": "marathon-pace-bracelet", "is_git_repo": true, "md_files": 0, "size_kb": 31, "description": "馬拉松配速手環", "progress": "planning", "owner": "Sean", "next_action": "設計配速演算法"},
+    {"name": "automation", "name_zh": "自動化腳本", "path": "automation", "is_git_repo": true, "md_files": 2, "size_kb": 4, "description": "自動化腳本", "progress": "in_progress", "owner": "Sean", "next_action": "擴充腳本數量"},
+    {"name": "anime-character-analyzer", "name_zh": "動畫角色分析器", "path": "anime-character-analyzer", "is_git_repo": true, "md_files": 0, "size_kb": 27, "description": "動畫角色分析器", "progress": "planning", "owner": "Sean", "next_action": "收集訓練資料"},
+    {"name": "market-research-tool", "name_zh": "市場調查工具", "path": "market-research-tool", "is_git_repo": true, "md_files": 0, "size_kb": 12, "description": "市場調查工具", "progress": "planning", "owner": "Sean", "next_action": "定義功能需求"},
+    {"name": "presentation-generator", "name_zh": "簡報生成器", "path": "presentation-generator", "is_git_repo": true, "md_files": 0, "size_kb": 15, "description": "簡報生成器", "progress": "in_progress", "owner": "Sean", "next_action": "整合設計範本"},
+    {"name": "openclaw-presentation", "name_zh": "OpenClaw 簡報助手", "path": "openclaw-presentation", "is_git_repo": true, "md_files": 0, "size_kb": 0, "description": "OpenClaw 簡報助手", "progress": "planning", "owner": "Sean", "next_action": "建立Skill定義"},
+    {"name": "text-to-speech-mvp", "name_zh": "文字轉語音 MVP", "path": "text-to-speech-mvp", "is_git_repo": true, "md_files": 0, "size_kb": 0, "description": "文字轉語音 MVP", "progress": "planning", "owner": "Sean", "next_action": "選擇TTS引擎"}
   ]
 }
