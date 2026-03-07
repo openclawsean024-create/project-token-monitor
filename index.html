@@ -160,14 +160,6 @@
                     </div>
                 </div>
 
-                <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6 mb-4 md:mb-6">
-                    <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
-                        <div id="projectList" class="space-y-2"></div>
-                    </div>
-                </div>
-
                 <!-- Token Trend Chart -->
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">📈 Token 使用趨勢 (7天)</h3>
@@ -328,7 +320,7 @@
             
             renderTokenTrend();
             renderBudgetComparison();
-            renderProjectList(); renderProjectListDetail(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
+            renderProjectListDetail(); renderTopFiles(); renderFileExplorer(); renderRecentCommits(); renderActionItems(); renderCompetitorGaps();
         }
 
         function renderTokenTrend() {
@@ -391,7 +383,6 @@
                     const currentIndex = order.indexOf(project.progress);
                     const nextIndex = (currentIndex + 1) % order.length;
                     project.progress = order[nextIndex];
-                    renderProjectList();
                     renderProjectListDetail();
                     alert(`「${project.name}」狀態已改為：${getStatusLabel(project.progress)}`);
                     copyJsonToClipboard();
