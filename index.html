@@ -390,6 +390,40 @@
                 const githubIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`;
                 const externalIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>`;
                 const pagesIcon = `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>`;
+                const calendarIcon = `<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`;
+
+                const getDaysUntil = (dueDate) => {
+                    if (!dueDate) return null;
+                    const due = new Date(dueDate);
+                    const today = new Date('2026-03-07');
+                    return Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+                };
+
+                const getDueDateBadge = (dueDate) => {
+                    if (!dueDate) return '';
+                    const days = getDaysUntil(dueDate);
+                    let colorClass = 'bg-gray-100 text-gray-600';
+                    let text = dueDate;
+                    if (days !== null) {
+                        if (days < 0) { colorClass = 'bg-red-100 text-red-700'; text = '過期 ' + Math.abs(days) + ' 天'; }
+                        else if (days <= 3) { colorClass = 'bg-red-100 text-red-700'; text = '到期 ' + days + ' 天'; }
+                        else if (days <= 7) { colorClass = 'bg-yellow-100 text-yellow-700'; text = '到期 ' + days + ' 天'; }
+                        else { colorClass = 'bg-green-100 text-green-700'; text = days + ' 天後'; }
+                    }
+                    return `<button onclick="editDueDate('${p.name}')" class="flex items-center gap-1 px-2 py-1 rounded-lg text-xs ${colorClass} transition" title="點擊編輯截止日期">${calendarIcon}<span>${text}</span></button>`;
+                };
+
+                function editDueDate(projectName) {
+                    const project = dashboardData.projects.find(p => p.name === projectName);
+                    if (!project) return;
+                    const newDate = prompt('設定截止日期 (YYYY-MM-DD，空值移除):', project.due_date || '');
+                    if (newDate !== null) {
+                        project.due_date = newDate.trim() === '' ? null : newDate.trim();
+                        renderProjectListDetail();
+                        showToast('截止日期已更新');
+                        copyJsonToClipboard();
+                    }
+                }
 
                 const renderProjectCard = (p) => {
                     const links = [];
@@ -420,6 +454,7 @@
                                 <div class="flex flex-wrap items-center gap-2 mb-3">
                                     <span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">下一步: ${p.next_action || '未設定'}</span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">負責人: ${p.owner || '未指定'}</span>
+                                    ${getDueDateBadge(p.due_date)}
                                 </div>
                                 <div class="flex flex-wrap gap-2">${links.join('')}</div>
                             </div>
