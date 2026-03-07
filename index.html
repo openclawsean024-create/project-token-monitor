@@ -378,7 +378,11 @@
                                     <span class="w-2 h-2 rounded-full flex-shrink-0 ${p.is_git_repo ? 'bg-green-500' : 'bg-gray-300'}"></span>
                                     <h3 class="font-semibold text-gray-800 truncate">${p.name}</h3>
                                 </div>
-                                <p class="text-sm text-gray-500 mb-3 line-clamp-2">${p.description || '無描述'}</p>
+                                <p class="text-sm text-gray-500 mb-2 line-clamp-2">${p.description || '無描述'}</p>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">下一步: ${p.next_action || '未設定'}</span>
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">負責人: ${p.owner || '未指定'}</span>
+                                </div>
                                 <div class="flex flex-wrap gap-2">${links.join('')}</div>
                             </div>
                             <div class="flex-shrink-0 sm:ml-4">${getStatusBadge(p.progress)}</div>
