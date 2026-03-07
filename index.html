@@ -445,7 +445,7 @@
                     return Math.ceil((due - today) / (1000 * 60 * 60 * 24));
                 };
 
-                const getDueDateBadge = (dueDate) => {
+                const getDueDateBadge = (dueDate, projectName) => {
                     if (!dueDate) return '';
                     const days = getDaysUntil(dueDate);
                     let colorClass = 'bg-gray-100 text-gray-600';
@@ -456,7 +456,7 @@
                         else if (days <= 7) { colorClass = 'bg-yellow-100 text-yellow-700'; text = '到期 ' + days + ' 天'; }
                         else { colorClass = 'bg-green-100 text-green-700'; text = days + ' 天後'; }
                     }
-                    return `<button onclick="editDueDate('${p.name}')" class="flex items-center gap-1 px-2 py-1 rounded-lg text-xs ${colorClass} transition" title="點擊編輯截止日期">${calendarIcon}<span>${text}</span></button>`;
+                    return `<button onclick="editDueDate('${projectName}')" class="flex items-center gap-1 px-2 py-1 rounded-lg text-xs ${colorClass} transition" title="點擊編輯截止日期">${calendarIcon}<span>${text}</span></button>`;
                 };
 
                 function editDueDate(projectName) {
@@ -531,7 +531,7 @@
                                 <div class="flex flex-wrap items-center gap-2 mb-3">
                                     <span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">下一步: ${p.next_action || '未設定'}</span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">負責人: ${p.owner || '未指定'}</span>
-                                    ${getDueDateBadge(p.due_date)}
+                                    ${getDueDateBadge(p.due_date, p.name)}
                                     ${renderMilestones(p)}
                                 </div>
                                 <div class="flex flex-wrap gap-2">${links.join('')}</div>
