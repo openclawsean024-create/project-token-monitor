@@ -133,20 +133,20 @@
                 <!-- KPI Cards - 2x2 on mobile, 4 columns on desktop -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-xs md:text-sm text-gray-500">Open Issues</p>
-                        <p id="openIssues" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
+                        <p class="text-xs md:text-sm text-gray-500">Total Token</p>
+                        <p id="totalToken" class="text-2xl md:text-3xl font-bold text-indigo-600">--</p>
                     </div>
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-xs md:text-sm text-gray-500">Pending PRs</p>
-                        <p id="pendingPRs" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
+                        <p class="text-xs md:text-sm text-gray-500">總專案數</p>
+                        <p id="totalProjects" class="text-2xl md:text-3xl font-bold text-gray-800">--</p>
                     </div>
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-xs md:text-sm text-gray-500">Session Token</p>
-                        <p id="sessionToken" class="text-2xl md:text-3xl font-bold text-indigo-600">--</p>
+                        <p class="text-xs md:text-sm text-gray-500">已完成</p>
+                        <p id="completedProjects" class="text-2xl md:text-3xl font-bold text-green-600">--</p>
                     </div>
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
-                        <p class="text-xs md:text-sm text-gray-500">Cron Token</p>
-                        <p id="cronToken" class="text-2xl md:text-3xl font-bold text-purple-600">--</p>
+                        <p class="text-xs md:text-sm text-gray-500">Pending</p>
+                        <p id="pendingProjects" class="text-2xl md:text-3xl font-bold text-yellow-600">--</p>
                     </div>
                 </div>
 
@@ -296,13 +296,22 @@
             setText('lastUpdated', new Date(m.last_updated || dashboardData.last_updated).toLocaleString('zh-TW'));
             
             const gh = dashboardData.github_status || {};
-            setText('openIssues', gh.open_issues || 0);
-            setText('pendingPRs', gh.pending_prs || 0);
             setText('branchName', gh.branch || '--');
             
             const tm = dashboardData.token_metrics || {};
-            setText('sessionToken', (tm.session_avg_tokens || 0).toLocaleString());
-            setText('cronToken', (tm.cron_avg_tokens || 0).toLocaleString());
+            // 計算 Total Token（使用 monthly_projection 或目前的 projection）
+            const totalToken = tm.monthly_projection || tm.cost_estimate_usd * 1000 || 0;
+            setText('totalToken', totalToken.toLocaleString());
+            
+            // 計算專案數
+            const projects = dashboardData.projects || [];
+            const totalProjects = projects.length;
+            const completedProjects = projects.filter(p => p.progress === 'completed').length;
+            const pendingProjects = projects.filter(p => p.progress === 'in_progress' || p.progress === 'planning').length;
+            
+            setText('totalProjects', totalProjects);
+            setText('completedProjects', completedProjects);
+            setText('pendingProjects', pendingProjects);
             
             const ch = tm.cron_health || {};
             setText('cronLastRun', ch.last_run ? new Date(ch.last_run).toLocaleString('zh-TW') : '--');
