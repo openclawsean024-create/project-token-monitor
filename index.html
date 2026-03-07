@@ -488,26 +488,25 @@
                 }
 
                 const renderProjectCard = (p) => {
-                    const links = [];
                     const org = 'openclawsean024-create';
                     const repoLink = p.links?.repo || (p.path ? `https://github.com/${org}/${p.path}` : null);
                     const pagesLink = p.links?.pages || (p.path ? `https://${org}.github.io/${p.path}/` : null);
-                    const externalLink = p.links?.external || null;
+                    // 嘗試自動產生 Vercel 連結
+                    const externalLink = p.links?.external || (p.path ? `https://${p.path}.vercel.app` : null);
 
-                    if (repoLink) {
-                        links.push(`<a href="${repoLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="GitHub 倉庫">${githubIcon}<span class="hidden sm:inline">Repo</span></a>`);
-                    }
-                    if (pagesLink) {
-                        links.push(`<a href="${pagesLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="GitHub Pages">${pagesIcon}<span class="hidden sm:inline">Pages</span></a>`);
-                    }
-                    if (externalLink) {
-                        links.push(`<a href="${externalLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition" title="外部網站">${externalIcon}<span class="hidden sm:inline">網站</span></a>`);
-                    }
+                    // 總是顯示三個連結按鈕，如果沒有連結則顯示disabled樣式
+                    const renderLink = (url, icon, text, title) => {
+                        if (url) {
+                            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-700 transition" title="${title}">${icon}<span>${text}</span></a>`;
+                        } else {
+                            return `<span class="flex items-center gap-1 px-2 py-1 bg-gray-50 rounded text-xs text-gray-400 cursor-not-allowed" title="無連結">${icon}<span>${text}</span></span>`;
+                        }
+                    };
 
                     const healthScore = p.health_score || 0;
                     const healthColor = healthScore >= 80 ? 'text-green-600' : healthScore >= 50 ? 'text-yellow-600' : 'text-red-600';
                     const healthBg = healthScore >= 80 ? 'bg-green-50' : healthScore >= 50 ? 'bg-yellow-50' : 'bg-red-50';
-                    const healthBadge = '<div class=\"flex items-center gap-1 px-2 py-1 ' + healthBg + ' rounded-lg text-xs ' + healthColor + '\" title=\"專案健康度\"><span class=\"font-medium\">' + healthScore + '</span><span>/100</span></div>';
+                    const healthBadge = '<div class=\"flex items-center gap-1 px-2 py-1 ' + healthBg + ' rounded text-xs ' + healthColor + '\" title=\"專案健康度\"><span class=\"font-medium\">' + healthScore + '</span><span>/100</span></div>';
 
                     return `
                     <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -524,7 +523,11 @@
                                     ${getDueDateBadge(p.due_date, p.name)}
                                     ${renderMilestones(p)}
                                 </div>
-                                <div class="flex flex-wrap gap-2">${links.join('')}</div>
+                                <div class="flex flex-wrap gap-2">
+                                    ${renderLink(repoLink, githubIcon, 'Repo', 'GitHub 倉庫')}
+                                    ${renderLink(pagesLink, pagesIcon, 'Pages', 'GitHub Pages')}
+                                    ${renderLink(externalLink, externalIcon, 'Vercel', 'Vercel 部署')}
+                                </div>
                             </div>
                             <div class="flex-shrink-0 sm:ml-4 flex items-center gap-2">${healthBadge}${getStatusBadge(p.progress, p.name)}</div>
                         </div>
