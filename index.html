@@ -75,6 +75,14 @@
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                     <span>總覽 Overview</span>
                 </a>
+                <a href="#token-usage" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <span>Token 使用量</span>
+                </a>
+                <a href="#budget" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Budget 預估</span>
+                </a>
                 <a href="#audit" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                     <span>審計報告</span>
@@ -153,30 +161,32 @@
                 </div>
 
                 <!-- 專案列表 -->
-                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">專案列表</h3>
                     <div id="projectListDetail" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
+            </section>
 
-                <!-- Token Trend Chart -->
+            <!-- Token Usage Section -->
+            <section id="token-usage" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Token 使用量</h2>
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">📈 Token 使用趨勢 (7天)</h3>
                     <div id="tokenTrendChart" class="h-32 md:h-48 flex items-end gap-1 md:gap-2"></div>
                 </div>
+                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
+                    <div id="topFiles" class="space-y-2"></div>
+                </div>
+            </section>
 
-                <!-- Budget vs Actual -->
+            <!-- Budget Section -->
+            <section id="budget" class="p-4 md:p-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Budget 預估</h2>
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">💰 Budget vs Actual</h3>
                     <div id="budgetComparison" class="space-y-3"></div>
                 </div>
-
-                <!-- Top Files -->
-                <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100 mb-4 md:mb-6">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Context 檔案消耗 Top 5</h3>
-                    <div id="topFiles" class="space-y-2"></div>
-                </div>
-
-                <!-- Recent Commits -->
                 <div class="bg-white rounded-xl p-3 md:p-5 shadow-sm border border-gray-100">
                     <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">最近 Commit 紀錄</h3>
                     <div id="recentCommits" class="space-y-2"></div>
@@ -225,6 +235,7 @@
                 dashboardData = await r.json(); 
                 console.log('Data loaded successfully:', dashboardData);
                 renderDashboard(); 
+                updateLastUpdatedTime();
             } catch(e) { 
                 console.error('Data load error:', e);
                 // Try alternative paths
@@ -233,11 +244,19 @@
                     if (!r.ok) throw new Error('Network response was not ok');
                     dashboardData = await r.json(); 
                     renderDashboard(); 
+                    updateLastUpdatedTime();
                 } catch(e2) { 
                     console.error('Fallback load error:', e2);
                     const lastUpdatedEl = document.getElementById('lastUpdated');
                     if (lastUpdatedEl) lastUpdatedEl.textContent = '資料載入失敗'; 
                 } 
+            }
+        }
+        
+        function updateLastUpdatedTime() {
+            const lastUpdatedEl = document.getElementById('lastUpdated');
+            if (lastUpdatedEl) {
+                lastUpdatedEl.textContent = new Date().toLocaleString('zh-TW');
             }
         }
 
